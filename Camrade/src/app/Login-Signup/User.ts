@@ -1,0 +1,19 @@
+export class User{
+    userId:number;
+    firstName:string;
+    lastName:string;
+    userName:string;
+    alterName:string;
+    password:string;
+    email:string;
+    phoneNo:string;
+    birthdate:Date;
+    gender:string;
+    profilePicture:string;
+    address:string;
+    quotes:string;
+    about:string;
+    work:string;
+    schoolName:string;
+    collegeName:string;
+}

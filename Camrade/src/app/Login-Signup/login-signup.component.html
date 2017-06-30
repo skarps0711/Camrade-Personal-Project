@@ -1,0 +1,191 @@
+<div class="container-fluid">
+
+    <div *ngIf="showLogin" class="col-md-offset-4 col-md-4 loginForm">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Login</h4>
+            </div>
+            <div class="panel-body loginPanelBody">
+                <form [formGroup]="loginForm" class="form-horizontal" (submit)="loginUser()" novalidate>
+                    <div class="col-md-12">
+                        <div class="input-group form-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input type="email" class="form-control" formControlName="userName" placeholder="User name">
+                        </div>
+                        <div class="col-sm-12 showError" *ngIf="loginFormErrors.userName">
+                            <p>{{loginFormErrors.userName}}</p>
+                        </div>
+                        <div class="input-group form-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input type="password" class="form-control" formControlName="password" placeholder="Password">
+                        </div>
+                        <div class="col-sm-12 showError" *ngIf="loginFormErrors.password">
+                            <p>{{loginFormErrors.password}}</p>
+                        </div>
+                        <div class="col-sm-12 showError" *ngIf="isLoginError">
+                            <p>Invalid User name or Password</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-1">
+                            <div class="checkbox">
+                                <label><input type="checkbox" > Remember me</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-sm-offset-5">
+                            <button type="submit" [disabled]="!loginForm.valid" class="btn btn-success loginButton">Login</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-sm-offset-4 forgetPassword">
+                            <a routerLink="/users/forgetpassword" routerLinkActive="active" >Forget password?</a>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-sm-offset-4 qusToUserLogin">
+                            <p>Don't have an acount?</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-offset-4 col-sm-offset-5">
+                            <button type="button" (click)="viewSignupForm()" class="btn btn-danger">Create an account</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showSignup" class="col-md-offset-3 col-md-6 signupForm">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4>Signup</h4>
+            </div>
+            <div class="panel-body">
+                <form [formGroup]="signupForm" class="form-horizontal" (submit)="signupUser()" novalidate>
+                    <div class="col-md-12">
+                        <div class="col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="text" class="form-control" formControlName="firstName" placeholder="First name">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.firstName">
+                                <p>{{signupFormErrors.firstName}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="text" class="form-control" formControlName="lastName" placeholder="Last name">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.lastName">
+                                <p>{{signupFormErrors.lastName}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <input type="text" class="form-control" #userName (keyup)="onUserNameChange(userName.value)" formControlName="userName" placeholder="User name">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.userName">
+                                <p>{{signupFormErrors.userName}}</p>
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="isUserNameExist">
+                                <p>User name already exists</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-5">
+                            <div class=" input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input type="password" class="form-control" formControlName="password" placeholder="Password">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.password">
+                                <p>{{signupFormErrors.password}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-push-2 col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                <input type="password" class="form-control" formControlName="confPassword" placeholder="Confirm password">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.confPassword">
+                                <p>{{signupFormErrors.confPassword}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                <input type="text" class="form-control" #email (keyup)="onEmailChange(email.value)" formControlName="email" placeholder="Email">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.email">
+                                <p>{{signupFormErrors.email}}</p>
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="isEmailExist">
+                                <p>Email is already registered</p>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                                <input type="text" class="form-control" formControlName="phoneNo" placeholder="Phone number">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.phoneNo">
+                                <p>{{signupFormErrors.phoneNo}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                <input type="date" class="form-control" formControlName="birthDate" placeholder="Date of birth">
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.birthDate">
+                                <p>{{signupFormErrors.birthDate}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-2 col-md-5">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                <select formControlName="gender" class="form-control" title="Choose one of the following...">
+                                     <option value="">Select your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-12 showError" *ngIf="signupFormErrors.gender">
+                                <p>{{signupFormErrors.gender}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 signupButtons">
+                        <div class="col-md-offset-4">
+                            <button type="submit" [disabled]="!signupForm.valid || isUserNameExist || isEmailExist" class="btn btn-primary customButton">Signup</button>
+                            <button type="button" class="btn btn-danger col-sm-offset-1 customButton">Reset</button>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-offset-5 qusToUser">
+                            <p>Already have an account?</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-offset-4 col-sm-offset-4">
+                            <button type="button" class="btn btn-success col-md-offset-1 signupFormLoginButton" (click)="viewLoginForm()">Click here to login</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
