@@ -71,8 +71,9 @@ public class AuthendicationController {
 		}
 	}
 	
-	@RequestMapping(value = "/users/sendemail", method = RequestMethod.POST)
+	@RequestMapping(value = "/users/passwordreceiveemail", method = RequestMethod.POST)
 	public ResponseEntity<?> findUser(@RequestBody String userNameOrEmail){
+		System.out.println(userNameOrEmail);
 		UserFieldCheck userFieldCheck;
 		Boolean result=authService.sendEmail(userNameOrEmail);
 		if(result==true){

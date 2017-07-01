@@ -100,6 +100,7 @@ export class LoginSignupComponent implements OnInit {
     }
     onLoginSuccess(loginVal: User) {
         this.user = loginVal;
+        console.log("Login success!!");
     }
     onLoginFailure(error) {
         this.isLoginError = true;

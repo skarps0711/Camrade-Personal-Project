@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UserFieldCheck } from "app/Login-Signup/user-field-check";
 import { LoginSignupService } from "app/Login-Signup/login-signup.service";
+import { Router } from "@angular/router";
 
 @Component({
     templateUrl: './forget-password.component.html',
@@ -14,14 +15,18 @@ export class ForgetPasswordComponent implements OnInit {
     showByEmail: boolean = false;
     isUserNameExist: boolean = true;
     isEmailExist: boolean = true;
-    isUserNameVerified:boolean=false;
-    isEmailVerified:boolean=false;
-    userName:string;
+    isUserNameVerified: boolean = false;
+    isEmailVerified: boolean = false;
+    isPasswordSent: boolean = false;
+    isPasswordSentError: boolean = false;
+    userName: string;
+    userEmail: string;
     forgetPassForm: FormGroup;
     userNameCheck: UserFieldCheck = new UserFieldCheck();
     emailCheck: UserFieldCheck = new UserFieldCheck();
+    passwordSentCheck: UserFieldCheck = new UserFieldCheck();
 
-    constructor(private fb: FormBuilder, private authService: LoginSignupService) { }
+    constructor(private fb: FormBuilder, private authService: LoginSignupService,private router:Router) { }
 
     ngOnInit() {
         this.createForm();
@@ -45,13 +50,17 @@ export class ForgetPasswordComponent implements OnInit {
         this.showByUserName = false;
     }
     onUserNameChange(userName) {
-        if(userName.length<1){
+        this.isPasswordSent = false;
+        this.isPasswordSentError = false;
+        if (userName.length < 1) {
             this.isUserNameExist = true;
         }
         this.authService.isUserNameExist(userName).subscribe((data) => this.isUserNameExistSuccess(data), (error) => this.isUserNameExistFailure(error));
     }
-     onEmailChange(email) {
-         if(email.length<1){
+    onEmailChange(email) {
+        this.isPasswordSent = false;
+        this.isPasswordSentError = false;
+        if (email.length < 1) {
             this.isEmailExist = true;
         }
         this.authService.isEmailExist(email).subscribe((data) => this.isEmailExistSuccess(data), (error) => this.isEmailExistFailure(error))
@@ -61,34 +70,51 @@ export class ForgetPasswordComponent implements OnInit {
         this.isUserNameExist = false;
         if (this.userNameCheck.status == true) {
             this.isUserNameExist = true;
-            this.isUserNameVerified=true;
-        }else{
-            this.isUserNameVerified=false;
+            this.isUserNameVerified = true;
+        } else {
+            this.isUserNameVerified = false;
         }
     }
     isUserNameExistFailure(error) {
     }
-     isEmailExistSuccess(userFieldCheck: UserFieldCheck) {
+    isEmailExistSuccess(userFieldCheck: UserFieldCheck) {
         this.emailCheck = userFieldCheck;
         this.isEmailExist = false;
         if (this.emailCheck.status == true) {
             this.isEmailExist = true;
-            this.isEmailVerified=true;
+            this.isEmailVerified = true;
         }
-        else{
-            this.isEmailVerified=false;
+        else {
+            this.isEmailVerified = false;
         }
     }
     isEmailExistFailure(error) {
     }
-    onSubmit(){
-        if(this.isUserNameVerified==true){
+    onSubmit() {
+        if (this.isUserNameVerified == true) {
+            this.authService.passwordReceiveEmail(this.userName).subscribe((data) => this.isPasswordReceiveSuccess(data), (error) => this.isPasswordReceiveFailure(error));
+        } else if (this.isEmailVerified == true) {
+            this.authService.passwordReceiveEmail(this.userEmail).subscribe((data) => this.isPasswordReceiveSuccess(data), (error) => this.isPasswordReceiveFailure(error));
+        } else {
 
-        }else if(this.isEmailVerified==true){
-
-        }else{
-            
         }
+    }
+    onCancel(){
+        this.router.navigate(['./users/loginsignup']);
+    }
+    isPasswordReceiveSuccess(data: UserFieldCheck) {
+        this.passwordSentCheck = data;
+        if (this.passwordSentCheck.status == true) {
+            this.isPasswordSent = true;
+        } else {
+            this.isPasswordSent = false;
+            this.isPasswordSentError = true;
+        }
+    }
+    isPasswordReceiveFailure(error) {
+        console.log(error);
+        this.isPasswordSent = false;
+        this.isPasswordSentError = true;
     }
     onForgetPassValueChanged(data?: any) {
         if (!this.forgetPassForm) { return; }

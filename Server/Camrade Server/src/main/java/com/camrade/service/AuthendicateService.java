@@ -10,32 +10,31 @@ import com.camrade.model.Login;
 import com.camrade.model.SignupUser;
 import com.camrade.repository.UserRepository;
 
-import java.util.*;  
-import javax.mail.*;  
-import javax.mail.internet.*;  
-import javax.activation.*; 
-
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.activation.*;
 
 @Service
 public class AuthendicateService {
-	
+
 	@Autowired
 	UserRepository userRepo;
-	
-	public User validateUser(Login login){
-		User user=null;
-		try{
-			user=userRepo.findByUserNameAndPassword(login.getUserName(), login.getPassword());
-		}catch(NullPointerException e){
-			user=null;
+
+	public User validateUser(Login login) {
+		User user = null;
+		try {
+			user = userRepo.findByUserNameAndPassword(login.getUserName(), login.getPassword());
+		} catch (NullPointerException e) {
+			user = null;
 		}
 		return user;
 	}
-	
-	public User addUser(SignupUser newUser){
-		User user=null;
-		User addUser=new User();
-		try{
+
+	public User addUser(SignupUser newUser) {
+		User user = null;
+		User addUser = new User();
+		try {
 			addUser.setUserId(null);
 			addUser.setFirstName(newUser.getFirstName());
 			addUser.setLastName(newUser.getLastName());
@@ -53,86 +52,134 @@ public class AuthendicateService {
 			addUser.setWork("");
 			addUser.setSchoolName("");
 			addUser.setCollegeName("");
-			user=userRepo.save(addUser);
-		}catch(Exception e){
+			user = userRepo.save(addUser);
+		} catch (Exception e) {
 			e.printStackTrace();
-			user=null;
+			user = null;
 		}
 		return user;
 	}
-	
-	public User isUserNameExist(String newUserName){
-		User user=null;
-		try{
-			user=userRepo.findByUserName(newUserName);
-		}catch(NullPointerException e){
-			user=null;
+
+	public User isUserNameExist(String newUserName) {
+		User user = null;
+		try {
+			user = userRepo.findByUserName(newUserName);
+		} catch (NullPointerException e) {
+			user = null;
 		}
 		return user;
 	}
-	
-	public User isEmailExist(String newEmail){
-		User user=null;
-		try{
-			user=userRepo.findByEmail(newEmail);
-		}catch(Exception e){
-			user=null;
+
+	public User isEmailExist(String newEmail) {
+		User user = null;
+		try {
+			user = userRepo.findByEmail(newEmail);
+		} catch (Exception e) {
+			user = null;
 		}
 		return user;
 	}
-	
-	public boolean sendEmail(String userNameOrEmail){
-		User user=null;
-		String userName="";
-		String email="";
-	      // Recipient's email ID needs to be mentioned.
-	      String to = "spaulmailme@gmail.com";
 
-	      // Sender's email ID needs to be mentioned
-	      String from = "mailtosureshkdm@gmail.com";
+	public boolean sendEmail(String userNameOrEmail) {
+		User user = null;
+		Boolean status = false;
+		final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+		// Get a Properties object
+		Properties props = System.getProperties();
+		props.setProperty("mail.smtp.host", "smtp.gmail.com");
+		props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
+		props.setProperty("mail.smtp.socketFactory.fallback", "false");
+		props.setProperty("mail.smtp.port", "465");
+		props.setProperty("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.debug", "true");
+		props.put("mail.store.protocol", "pop3");
+		props.put("mail.transport.protocol", "smtp");
+		final String username = "mailtosureshkdm@gmail.com";//
+		final String password = "Surram.Log33";
 
-	      // Assuming you are sending email from localhost
-	      String host = "localhost";
-
-	      // Get system properties
-	      Properties properties = System.getProperties();
-
-	      // Setup mail server
-	      properties.setProperty("mail.smtp.host", host);
-
-	      // Get the default Session object.
-	      Session session = Session.getDefaultInstance(properties);
-
-	      
-		if(userNameOrEmail.contains("@")){
-			email=userNameOrEmail;
+		if (userNameOrEmail.contains("@")) {
+			String email = userNameOrEmail;
+			String userName="";
+			String userPassword="";
+			try{
+				userName=userRepo.findByEmail(email).getUserName();
+				userPassword=userRepo.findByEmail(email).getPassword();
+			}catch(Exception e){
+				status=false;
+			}
 			try {
-		         // Create a default MimeMessage object.
-		         MimeMessage message = new MimeMessage(session);
+				Session session = Session.getDefaultInstance(props, new Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
 
-		         // Set From: header field of the header.
-		         message.setFrom(new InternetAddress(from));
+				// -- Create a new message --
+				Message msg = new MimeMessage(session);
 
-		         // Set To: header field of the header.
-		         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+				// -- Set the FROM and TO fields --
+				msg.setFrom(new InternetAddress("mailtosureshkdm@gmail.com"));
+				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
+				msg.setSubject("Camrade Account Password");
+				msg.setText("Hello user,"
+						+ "\n\n Please use the following credentials to login your Camrade account safely."
+						+ "\n\n User name : "+userName
+						+ "\n Password  : "+userPassword
+						+ "\n\nDo not reply any mail."
+						+ "\n\nRegards"
+						+ "\nCamrade Admin");
+				msg.setSentDate(new Date());
+				Transport.send(msg);
+				System.out.println("Message sent.");
+				status = true;
+			} catch (MessagingException e) {
+				System.out.println("Erreur d'envoi, cause: " + e);
+				status=false;
+			}
 
-		         // Set Subject: header field
-		         message.setSubject("Mail check!");
+		} else {
+			String userName = userNameOrEmail;
+			String userMail="";
+			String userPassword="";
+			try {
+				userMail=userRepo.findByUserName(userName).getEmail();
+				userPassword=userRepo.findByUserName(userName).getPassword();
+			} catch (Exception e) {
+				status=false;
+			}
+			try {
+				Session session = Session.getDefaultInstance(props, new Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				});
 
-		         // Now set the actual message
-		         message.setText("Hello Saurabh");
+				// -- Create a new message --
+				Message msg = new MimeMessage(session);
 
-		         // Send message
-		         Transport.send(message);
-		         System.out.println("Sent message successfully....");
-		      }catch (MessagingException mex) {
-		         mex.printStackTrace();
-		      }
+				// -- Set the FROM and TO fields --
+				msg.setFrom(new InternetAddress("mailtosureshkdm@gmail.com"));
+				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userMail, false));
+				msg.setSubject("Camrade Account Password");
+				msg.setText("Hello user,"
+						+ "\n\n Please use the following credentials to login your Camrade account safely."
+						+ "\n\n User name : "+userName
+						+ "\n Password  : "+userPassword
+						+ "\n\nDo not reply any mail."
+						+ "\n\nRegards"
+						+ "\nCamrade Admin");
+				msg.setSentDate(new Date());
+				Transport.send(msg);
+				System.out.println("Message sent.");
+				status = true;
+			} catch (MessagingException e) {
+				System.out.println("Erreur d'envoi, cause: " + e);
+				status=false;
+			}
 			
-		}else{
-			userName=userNameOrEmail;
 		}
-		return true;
+		return status;
 	}
-		
+
 }

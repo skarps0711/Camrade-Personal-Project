@@ -20,7 +20,7 @@ export class LoginSignupService {
     addUserUrl: string = "http://localhost:8080/users/adduser";
     userNameCheckUrl: string = "http://localhost:8080/users/isusernameexist";
     emailCheckUrl: string = "http://localhost:8080/users/isemailexist";
-    sendEmailUrl: string = "http://localhost:8080/users/sendemail";
+    sendEmailUrl: string = "http://localhost:8080/users/passwordreceiveemail";
 
     validateUser(login: Login): Observable<User> {
         return this.http.post(this.loginUrl, login, this.headers)
@@ -42,8 +42,8 @@ export class LoginSignupService {
             .map((res: Response) => <UserFieldCheck>res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'Signup credentials error'));
     }
-    sendEmail(userNameOrEmail:String):Observable<UserFieldCheck>{
-        return this.http.post(this.emailCheckUrl, userNameOrEmail, this.headers)
+    passwordReceiveEmail(userNameOrEmail:String):Observable<UserFieldCheck>{
+        return this.http.post(this.sendEmailUrl, userNameOrEmail, this.headers)
             .map((res: Response) => <UserFieldCheck>res.json())
             .catch((error: any) => Observable.throw(error.json().error || 'User credentials error'));
     }
