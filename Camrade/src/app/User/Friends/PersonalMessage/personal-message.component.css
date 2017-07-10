@@ -1,0 +1,20 @@
+.showError{
+    color: red;
+    margin-top: -12px;
+}
+button:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.panel-heading{
+    text-align: center;
+}
+.messageSent{
+    color: purple;
+    margin-top: 8px;
+    text-align: center;
+}
+.messageSentError{
+    color: red;
+    margin-top: 8px;
+    text-align: center;
+}

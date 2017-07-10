@@ -1,0 +1,17 @@
+<form class="form-horizontal">
+    <div class="input-group form-group">
+        <input type="text" #userField (keyup)="suggestFriends(userField.value)" class="form-control" placeholder="Phone number or email">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+    </div>
+</form>
+<div class="col-sm-12">
+    <div class="col-sm-4" *ngFor="let sugFriends of friendDetails">
+        <div class="col-sm-5">
+            <p>{{sugFriends.profilePicture}}</p>
+        </div>
+        <div class="col-sm-7">
+            <p>{{sugFriends.firstName}} {{sugFriends.lastName}}</p>
+            <button type="button" class="btn btn-sm btn-success">Add Friend</button>
+        </div>
+    </div>
+</div>

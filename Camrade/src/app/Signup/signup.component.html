@@ -1,70 +1,11 @@
 <div class="container-fluid">
-
-    <div *ngIf="showLogin" class="col-md-offset-4 col-md-4 loginForm">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4>Login</h4>
-            </div>
-            <div class="panel-body loginPanelBody">
-                <form [formGroup]="loginForm" class="form-horizontal" (submit)="loginUser()" novalidate>
-                    <div class="col-md-12">
-                        <div class="input-group form-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                            <input type="email" class="form-control" formControlName="userName" placeholder="User name">
-                        </div>
-                        <div class="col-sm-12 showError" *ngIf="loginFormErrors.userName">
-                            <p>{{loginFormErrors.userName}}</p>
-                        </div>
-                        <div class="input-group form-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input type="password" class="form-control" formControlName="password" placeholder="Password">
-                        </div>
-                        <div class="col-sm-12 showError" *ngIf="loginFormErrors.password">
-                            <p>{{loginFormErrors.password}}</p>
-                        </div>
-                        <div class="col-sm-12 showError" *ngIf="isLoginError">
-                            <p>Invalid User name or Password</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-offset-1">
-                            <div class="checkbox">
-                                <label><input type="checkbox" > Remember me</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-sm-offset-5">
-                            <button type="submit" [disabled]="!loginForm.valid" class="btn btn-success loginButton">Login</button>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-sm-offset-4 forgetPassword">
-                            <a routerLink="/users/forgetpassword" routerLinkActive="active" >Forget password?</a>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-sm-offset-4 qusToUserLogin">
-                            <p>Don't have an acount?</p>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="col-md-offset-4 col-sm-offset-5">
-                            <button type="button" (click)="viewSignupForm()" class="btn btn-danger">Create an account</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div *ngIf="showSignup" class="col-md-offset-3 col-md-6 signupForm">
+    <div class="col-md-offset-3 col-md-6 signupForm">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4>Signup</h4>
             </div>
             <div class="panel-body">
-                <form [formGroup]="signupForm" class="form-horizontal" (submit)="signupUser()" novalidate>
+                <form [formGroup]="signupForm" class="form-horizontal" (submit)="onSignupUser()" novalidate>
                     <div class="col-md-12">
                         <div class="col-md-5">
                             <div class="input-group form-group">
@@ -170,8 +111,9 @@
                     </div>
                     <div class="col-md-12 signupButtons">
                         <div class="col-md-offset-4">
-                            <button type="submit" [disabled]="!signupForm.valid || isUserNameExist || isEmailExist" class="btn btn-primary customButton">Signup</button>
-                            <button type="button" class="btn btn-danger col-sm-offset-1 customButton">Reset</button>
+                            <button type="submit" [disabled]="!signupForm.valid || isUserNameExist || isEmailExist" data-toggle="modal" data-target="#signupSuccessModel"
+                                class="btn btn-primary customButton">Signup</button>
+                            <button type="button" class="btn btn-danger col-sm-offset-1 customButton" (click)="resetSignupForm()">Reset</button>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -185,6 +127,29 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="signupSuccessModel" role="dialog">
+        <div *ngIf="isSignupSuccess" class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>You have successfully signed up.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" (click)="viewLoginForm()">Login</button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isSignupFailure" class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Error occured. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" (click)="viewLoginForm()">Login</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="viewSignupForm()">Try again</button>
+                </div>
             </div>
         </div>
     </div>

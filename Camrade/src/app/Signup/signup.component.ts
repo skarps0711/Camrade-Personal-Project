@@ -1,44 +1,36 @@
 import { Component, OnInit } from '@angular/core'
-import { FormBuilder, FormGroup, Validators, Validator } from "@angular/forms";
+import { FormGroup, Validators, FormBuilder, Validator } from "@angular/forms";
 import { LoginSignupCustomValidator } from "app/Login-Signup/login-signup-validator";
-import { Login } from "app/Login-Signup/Login";
-import { User } from "app/Login-Signup/User";
 import { LoginSignupService } from "app/Login-Signup/login-signup.service";
-import { SignupUser } from "app/Login-Signup/SignupUser";
+import { Router } from "@angular/router";
+import { User } from "app/Login-Signup/User";
 import { UserFieldCheck } from "app/Login-Signup/user-field-check";
+import { SignupUser } from "app/Signup/SignupUser";
 
 @Component({
-    templateUrl: './login-signup.component.html',
-    styleUrls: ['./login-signup.component.css']
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.css']
 })
 
-export class LoginSignupComponent implements OnInit {
-    showSignup: boolean = false;
-    showLogin: boolean = true;
-    isLoginError: boolean = false;
+export class SignupComponent implements OnInit {
+    isSignupSuccess: boolean = false;
+    isSignupFailure: boolean = false;
     isUserNameExist: boolean = false;
     isEmailExist: boolean = false;
-    loginForm: FormGroup;
+    userNameCheck: UserFieldCheck = new UserFieldCheck();
+    emailCheck: UserFieldCheck = new UserFieldCheck();
     signupForm: FormGroup;
     validator: Validator;
     userNameCheckValidator: Validator;
-    login: Login = new Login();
-    user: User = new User();
     signupUserVal: SignupUser = new SignupUser();
-    userNameCheck: UserFieldCheck = new UserFieldCheck();
-    emailCheck: UserFieldCheck = new UserFieldCheck();
 
-    constructor(private fb: FormBuilder, private authService: LoginSignupService) {
+    constructor(private fb: FormBuilder, private authService: LoginSignupService, private router: Router) {
     }
-
     ngOnInit() {
         this.createForms();
     }
+
     createForms() {
-        this.loginForm = this.fb.group({
-            userName: ['', Validators.required],
-            password: ['', Validators.required]
-        });
         this.signupForm = this.fb.group({
             userId: ['0'],
             firstName: ['', Validators.required],
@@ -54,18 +46,28 @@ export class LoginSignupComponent implements OnInit {
                 validator: LoginSignupCustomValidator.matchPassword,
                 userNameCheckValidator: LoginSignupCustomValidator
             });
-        this.loginForm.valueChanges
-            .subscribe(data => this.onLoginValueChanged(data));
-        this.onLoginValueChanged(); // (re)set validation messages now 
         this.signupForm.valueChanges
             .subscribe(data => this.onSignupValueChanged(data));
         this.onSignupValueChanged(); // (re)set validation messages now 
     }
+    viewLoginForm() {
+        console.log("sdsd");
+        this.router.navigate(['/users/login']);
+    }
+    onSignupUser() {
+        this.isSignupSuccess = false;
+        this.isSignupFailure = false;
+        this.signupUserVal = this.signupForm.value;
+        this.authService.addUser(this.signupUserVal).subscribe((data) => this.onSignupSuccess(data), (error) => this.onSignupFailure(error));
+    }
+    onSignupSuccess(data: User) {
+        this.isSignupSuccess = true;
+    }
+    onSignupFailure(error) {
+        this.isSignupFailure = true;
+    }
     onUserNameChange(username: string) {
         this.authService.isUserNameExist(username).subscribe((data) => this.isUserNameExistSuccess(data), (error) => this.isUserNameExistFailure(error))
-    }
-    onEmailChange(email: string) {
-        this.authService.isEmailExist(email).subscribe((data) => this.isEmailExistSuccess(data), (error) => this.isEmailExistFailure(error))
     }
     isUserNameExistSuccess(userFieldCheck: UserFieldCheck) {
         this.userNameCheck = userFieldCheck;
@@ -77,6 +79,10 @@ export class LoginSignupComponent implements OnInit {
     isUserNameExistFailure(error) {
 
     }
+    onEmailChange(email: string) {
+        this.authService.isEmailExist(email).subscribe((data) => this.isEmailExistSuccess(data), (error) => this.isEmailExistFailure(error))
+    }
+
     isEmailExistSuccess(userFieldCheck: UserFieldCheck) {
         this.emailCheck = userFieldCheck;
         this.isEmailExist = false;
@@ -86,66 +92,9 @@ export class LoginSignupComponent implements OnInit {
     }
     isEmailExistFailure(error) {
     }
-    viewSignupForm() {
-        this.showSignup = true;
-        this.showLogin = false;
+    resetSignupForm(){
+        location.reload();
     }
-    viewLoginForm() {
-        this.showLogin = true;
-        this.showSignup = false;
-    }
-    loginUser() {
-        this.login = this.loginForm.value;
-        this.authService.validateUser(this.login).subscribe((data) => this.onLoginSuccess(data), (error) => this.onLoginFailure(error));
-    }
-    onLoginSuccess(loginVal: User) {
-        this.user = loginVal;
-        console.log("Login success!!");
-    }
-    onLoginFailure(error) {
-        this.isLoginError = true;
-        console.log("login failure");
-    }
-    signupUser() {
-        this.signupUserVal = this.signupForm.value;
-        this.authService.addUser(this.signupUserVal).subscribe((data) => this.onSignupSuccess(data), (error) => this.onSignupFailure(error));
-    }
-    onSignupSuccess(data: User) {
-        console.log("Signup success");
-    }
-    onSignupFailure(error) {
-        console.log("Signupfailure");
-    }
-
-    onLoginValueChanged(data?: any) {
-        this.isLoginError = false; // hide login error message
-        if (!this.loginForm) { return; }
-        const form = this.loginForm;
-        for (const field in this.loginFormErrors) {
-            // clear previous error message (if any)
-            this.loginFormErrors[field] = '';
-            const control = form.get(field);
-            if (control && control.dirty && !control.valid) {
-                const messages = this.loginValidationMessages[field];
-                for (const key in control.errors) {
-                    this.loginFormErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
-    }
-
-    loginFormErrors = {
-        'userName': '',
-        'password': ''
-    };
-    loginValidationMessages = {
-        'userName': {
-            'required': 'User name is required'
-        },
-        'password': {
-            'required': 'Password is required'
-        }
-    };
 
     onSignupValueChanged(data?: any) {
         if (!this.signupForm) { return; }
@@ -211,4 +160,5 @@ export class LoginSignupComponent implements OnInit {
             'required': 'Gender is required'
         }
     };
+
 }

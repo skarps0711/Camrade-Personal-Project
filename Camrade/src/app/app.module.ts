@@ -5,22 +5,28 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from "app/app-routing.module";
-import { LoginSignupComponent } from "app/Login-Signup/login-signup.component";
 import { LoginSignupService } from "app/Login-Signup/login-signup.service";
 import { ForgetPasswordComponent } from "app/ForgetPassword/forget-password.component";
+import { UserModule } from "app/User/user.module";
+import { SignupComponent } from "app/Signup/signup.component";
+import { InvalidRequestComponent } from "app/InvalidRequest/invalid-request.component";
+import { LoginSignupComponent } from "app/Login-Signup/login.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginSignupComponent,
-    ForgetPasswordComponent
+    SignupComponent,
+    ForgetPasswordComponent,
+    InvalidRequestComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    UserModule
   ],
   providers: [LoginSignupService],
   bootstrap: [AppComponent]

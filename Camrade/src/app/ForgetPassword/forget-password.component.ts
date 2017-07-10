@@ -100,7 +100,7 @@ export class ForgetPasswordComponent implements OnInit {
         }
     }
     onCancel(){
-        this.router.navigate(['./users/loginsignup']);
+        this.router.navigate(['/users/login']);
     }
     isPasswordReceiveSuccess(data: UserFieldCheck) {
         this.passwordSentCheck = data;

@@ -123,8 +123,8 @@ public class AuthendicateService {
 				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
 				msg.setSubject("Camrade Account Password");
 				msg.setText("Hello user,"
-						+ "\n\n Please use the following credentials to login your Camrade account safely."
-						+ "\n\n User name : "+userName
+						+ "\n\nPlease use the following credentials to login your Camrade account safely."
+						+ "\n\nUser name : "+userName
 						+ "\n Password  : "+userPassword
 						+ "\n\nDo not reply any mail."
 						+ "\n\nRegards"
@@ -163,8 +163,8 @@ public class AuthendicateService {
 				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userMail, false));
 				msg.setSubject("Camrade Account Password");
 				msg.setText("Hello user,"
-						+ "\n\n Please use the following credentials to login your Camrade account safely."
-						+ "\n\n User name : "+userName
+						+ "\n\nPlease use the following credentials to login your Camrade account safely."
+						+ "\n\nUser name : "+userName
 						+ "\n Password  : "+userPassword
 						+ "\n\nDo not reply any mail."
 						+ "\n\nRegards"

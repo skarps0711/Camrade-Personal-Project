@@ -8,8 +8,8 @@ import 'rxjs/add/observable/throw';
 
 import { Login } from "app/Login-Signup/Login";
 import { User } from "app/Login-Signup/User";
-import { SignupUser } from "app/Login-Signup/SignupUser";
 import { UserFieldCheck } from "app/Login-Signup/user-field-check";
+import { SignupUser } from "app/Signup/SignupUser";
 
 @Injectable()
 export class LoginSignupService {
@@ -20,7 +20,7 @@ export class LoginSignupService {
     addUserUrl: string = "http://localhost:8080/users/adduser";
     userNameCheckUrl: string = "http://localhost:8080/users/isusernameexist";
     emailCheckUrl: string = "http://localhost:8080/users/isemailexist";
-    sendEmailUrl: string = "http://localhost:8080/users/passwordreceiveemail";
+    sendEmailUrl: string = "http://localhost:8080/users/passwordreceivetoemail";
 
     validateUser(login: Login): Observable<User> {
         return this.http.post(this.loginUrl, login, this.headers)

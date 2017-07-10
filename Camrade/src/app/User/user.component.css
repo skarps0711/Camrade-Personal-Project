@@ -1,0 +1,7 @@
+.userComp{
+    margin-top: 60px;
+}
+.navbar {background-color: #8e181b;}
+.navbar-inverse .navbar-nav > li > a, .navbar-default .navbar-brand {color: #f1f1f1;}
+.navbar-inverse .navbar-nav > li > a:hover, 
+.navbar-inverse .navbar-nav > li > a:focus {color: #f1f1f1; background-color: #b27677;}
