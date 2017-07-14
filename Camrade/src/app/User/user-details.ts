@@ -1,4 +1,4 @@
-export class User{
+export class UserDetails{
     userId:number;
     firstName:string;
     lastName:string;
@@ -7,7 +7,7 @@ export class User{
     password:string;
     email:string;
     phoneNo:string;
-    birthdate:Date;
+    birthDate:Date;
     gender:string;
     profilePicture:string;
     coverImage:string;

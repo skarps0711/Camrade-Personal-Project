@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { SendEmail } from "app/User/Friends/send-email.component";
 import { FriendsService } from "app/User/Friends/friends.service";
+import { SendEmail } from "app/User/Friends/send-email";
+import { ActivatedRoute, Params } from "@angular/router";
 
 @Component({
     templateUrl: './invite-friends.component.html',
@@ -14,11 +15,15 @@ export class InviteFriendsComponent implements OnInit {
     isInviteSentError: boolean = false;
     inviteForm: FormGroup;
     emailDetails: SendEmail;
+    userId:number;
 
-    constructor(private fb: FormBuilder, private friendsService: FriendsService) { }
+    constructor(private fb: FormBuilder, private friendsService: FriendsService,private activatedRoute: ActivatedRoute) { }
 
     ngOnInit() {
         this.createForm();
+         this.activatedRoute.parent.params.subscribe((params: Params) => {
+            this.userId = params['id'];
+        });
     }
 
     createForm() {
@@ -33,7 +38,7 @@ export class InviteFriendsComponent implements OnInit {
 
     onSubmit() {
         this.emailDetails = this.inviteForm.value;
-        this.friendsService.sendEmail(this.emailDetails).subscribe((data) => this.sendEmailSuccess(data), (error) => this.sendEmailFailure(error));
+        this.friendsService.sendEmail(this.emailDetails,this.userId).subscribe((data) => this.sendEmailSuccess(data), (error) => this.sendEmailFailure(error));
     }
     sendEmailSuccess(data) {
         this.isInviteSent = true;

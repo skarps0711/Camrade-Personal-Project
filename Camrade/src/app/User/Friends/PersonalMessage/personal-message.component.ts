@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { SendEmail } from "app/User/Friends/send-email.component";
 import { FriendsService } from "app/User/Friends/friends.service";
+import { SendEmail } from "app/User/Friends/send-email";
 
 @Component({
     templateUrl: './personal-message.component.html',

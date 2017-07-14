@@ -15,6 +15,7 @@ import { AddFriendsComponent } from "app/User/Friends/AddFriends/add-friends.com
 import { InviteFriendsComponent } from "app/User/Friends/InviteFriends/invite-friends.component";
 import { PersonalMessageComponent } from "app/User/Friends/PersonalMessage/personal-message.component";
 import { FriendRequestComponent } from "app/User/Friends/FriendRequest/friend-request.component";
+import { EditProfileComponent } from "app/User/Profile/Edit-Profile/edit-profile.component";
 
 const userRoutes: Routes = [
   {
@@ -24,6 +25,7 @@ const userRoutes: Routes = [
       { path: '', component: MediaComponent },
       { path: 'home', component: MediaComponent },
       { path: 'profile', component: ProfileComponent },
+      { path: 'editprofile', component: EditProfileComponent },
       { path: 'communication/messages', component: MessagesComponent },
       { path: 'communication/notifications', component: NotificationsComponent },
       {

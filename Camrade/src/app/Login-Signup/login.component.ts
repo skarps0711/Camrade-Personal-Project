@@ -47,13 +47,11 @@ export class LoginSignupComponent implements OnInit {
 
     onLoginSuccess(loginVal: User) {
         this.user = loginVal;
-        console.log("Login success!!");
         this.router.navigate(['/user/' + this.user.userId]);
     }
 
     onLoginFailure(error) {
         this.isLoginError = true;
-        console.log("login failure");
     }
 
     onLoginValueChanged(data?: any) {

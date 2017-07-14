@@ -40,7 +40,16 @@ public class AuthendicationController {
 		User user=null;
 		user=authService.addUser(newUser);
 		if(user!=null){
-			return new ResponseEntity<User>(user,HttpStatus.OK);
+			Boolean status=authService.createUserDirectory(user.getUserId());
+			status=authService.saveDefaultProfPicture(user);
+			if(status==true){
+				return new ResponseEntity<User>(user,HttpStatus.OK);
+			}
+			else{
+				authService.deleteUser(user);
+				authService.deleteUserDirectory(user);
+				return new ResponseEntity<User>(user,HttpStatus.BAD_REQUEST);
+			}
 		}
 		else{
 			return new ResponseEntity<User>(user,HttpStatus.BAD_REQUEST);

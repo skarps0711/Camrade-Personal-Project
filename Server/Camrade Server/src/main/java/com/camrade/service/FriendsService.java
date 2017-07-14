@@ -212,13 +212,18 @@ public class FriendsService {
 
 			}
 		}
-		Long[] userIds = new Long[suggestUsers.size()];
-		Long[] repeatedUserIndexes = new Long[suggestUsers.size()];
-		for (int a = 0; a < suggestUsers.size(); a++) {
-			System.out.println(suggestUsers.get(a).getUserId() + " qq");
-			userIds[a] = suggestUsers.get(a).getUserId();
-		}
-
 		return suggestUsers;
 	}
+	
+	public User getUser(Long userId){
+		User user=null;
+		try{
+			user=userRepo.findByUserId(userId);
+		}catch(Exception e){
+			user=null;
+		}
+		return user;
+	}
+	
+	
 }

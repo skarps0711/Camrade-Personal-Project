@@ -8,20 +8,25 @@
             </button>
             <a class="navbar-brand" href="#">Camrade</a>
         </div>
-        <div class="collapse navbar-collapse" id="userNavbar">
+        <div class="collapse navbar-collapse " id="userNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li><a routerLink="media" routerLinkActive="active"  [routerLinkActiveOptions]="{exact: true}">Media</a></li>
+                <li><a routerLink="media" routerLinkActive="active">Media</a></li>
                 <li><a routerLink="friends" routerLinkActive="active">Friends</a></li>
-                <li><img src="#" class="img-responsive" alt="Image"></li>
+                <li class="dropdown"><img src="/assets/users-files/{{userDetails.profilePicture}}" width="57px" class="img-responsive dropdown-toggle" data-toggle="dropdown" alt="Image">
+                    <ul class="dropdown-menu">
+                        <li><a routerLink="profile" routerLinkActive="active">Profile</a></li>
+                        <li><a routerLink="media" routerLinkActive="active">Logout</a></li>
+                    </ul>
+                </li>
                 <li><a routerLink="communication/messages" routerLinkActive="active">Messages</a></li>
                 <li><a routerLink="communication/notifications" routerLinkActive="active">Notifications</a></li>
             </ul>
         </div>
     </div>
 </nav>
-<div class="col-xs-10 userComp">
+<div class="col-md-10 col-sm-12 userComp">
     <router-outlet></router-outlet>
 </div>
-<div class="col-xs-2 userComp">
+<div class="col-xs-2  userComp">
     <chat></chat>
 </div>

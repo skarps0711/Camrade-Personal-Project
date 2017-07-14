@@ -1,4 +1,4 @@
 export class SendEmail{
-    emailo:string;
+    email:string;
     message:string;
 }

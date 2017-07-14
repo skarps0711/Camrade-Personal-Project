@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.camrade.entity.User;
 import com.camrade.model.ProcessCheck;
 import com.camrade.model.SendEmail;
 import com.camrade.model.SuggestUser;
@@ -38,6 +39,15 @@ public class FriendsController {
 	public ResponseEntity<?> searchFriends(@RequestBody String userField){
 		List<SuggestUser> suggestUsers=friendsService.getRelatedUsers(userField);
 		return new ResponseEntity<List<SuggestUser>>(suggestUsers,HttpStatus.OK);
+	}
+	@RequestMapping(value = "/user/{id}/getuser", method = RequestMethod.GET)
+	public ResponseEntity<?> getUser(@PathVariable(value="id") String id){
+		Long userId=Long.parseLong(id);
+		User user=friendsService.getUser(userId);
+		if(user==null){
+			return new ResponseEntity<User>(user,HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<User>(user,HttpStatus.OK);
 	}
 
 }

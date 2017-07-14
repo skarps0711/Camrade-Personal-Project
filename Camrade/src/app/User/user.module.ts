@@ -21,12 +21,15 @@ import { MyFriendsComponent } from "app/User/Friends/MyFriends/my-friends.compon
 import { PersonalMessageComponent } from "app/User/Friends/PersonalMessage/personal-message.component";
 import { FriendsService } from "app/User/Friends/friends.service";
 import { FriendRequestComponent } from "app/User/Friends/FriendRequest/friend-request.component";
+import { UserService } from "app/User/user.service";
+import { ProfileService } from "app/User/Profile/profile.service";
+import { EditProfileComponent } from "app/User/Profile/Edit-Profile/edit-profile.component";
 
 @NgModule({
   declarations: [
     UserComponent,MediaComponent,ProfileComponent,MessagesComponent,NotificationsComponent,FriendsComponent,
     ChatComponent,MyMediaComponent,SharedMediaComponent,ShareMediaComponent,UploadMediaComponent,AddFriendsComponent,
-    InviteFriendsComponent,MyFriendsComponent,PersonalMessageComponent,FriendRequestComponent
+    InviteFriendsComponent,MyFriendsComponent,PersonalMessageComponent,FriendRequestComponent,EditProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -35,10 +38,10 @@ import { FriendRequestComponent } from "app/User/Friends/FriendRequest/friend-re
     UserRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [FriendsService],
+  providers: [UserService,FriendsService,ProfileService],
   exports:[UserComponent,MediaComponent,ProfileComponent,MessagesComponent,NotificationsComponent,FriendsComponent,
   ChatComponent,MyMediaComponent,SharedMediaComponent,ShareMediaComponent,UploadMediaComponent,AddFriendsComponent,
-    InviteFriendsComponent,MyFriendsComponent,PersonalMessageComponent,FriendRequestComponent
+    InviteFriendsComponent,MyFriendsComponent,PersonalMessageComponent,FriendRequestComponent,EditProfileComponent
   ]
 })
 export class UserModule { }

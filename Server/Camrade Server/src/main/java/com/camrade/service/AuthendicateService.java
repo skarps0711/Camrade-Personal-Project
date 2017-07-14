@@ -10,10 +10,16 @@ import com.camrade.model.Login;
 import com.camrade.model.SignupUser;
 import com.camrade.repository.UserRepository;
 
+import java.io.File;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 
 @Service
 public class AuthendicateService {
@@ -46,6 +52,7 @@ public class AuthendicateService {
 			addUser.setBirthDate(newUser.getBirthDate());
 			addUser.setGender(newUser.getGender());
 			addUser.setProfilePicture("");
+			addUser.setCoverImage("");
 			addUser.setAddress("");
 			addUser.setQuotes("");
 			addUser.setAbout("");
@@ -100,13 +107,13 @@ public class AuthendicateService {
 
 		if (userNameOrEmail.contains("@")) {
 			String email = userNameOrEmail;
-			String userName="";
-			String userPassword="";
-			try{
-				userName=userRepo.findByEmail(email).getUserName();
-				userPassword=userRepo.findByEmail(email).getPassword();
-			}catch(Exception e){
-				status=false;
+			String userName = "";
+			String userPassword = "";
+			try {
+				userName = userRepo.findByEmail(email).getUserName();
+				userPassword = userRepo.findByEmail(email).getPassword();
+			} catch (Exception e) {
+				status = false;
 			}
 			try {
 				Session session = Session.getDefaultInstance(props, new Authenticator() {
@@ -122,31 +129,28 @@ public class AuthendicateService {
 				msg.setFrom(new InternetAddress("mailtosureshkdm@gmail.com"));
 				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email, false));
 				msg.setSubject("Camrade Account Password");
-				msg.setText("Hello user,"
-						+ "\n\nPlease use the following credentials to login your Camrade account safely."
-						+ "\n\nUser name : "+userName
-						+ "\n Password  : "+userPassword
-						+ "\n\nDo not reply any mail."
-						+ "\n\nRegards"
-						+ "\nCamrade Admin");
+				msg.setText(
+						"Hello user," + "\n\nPlease use the following credentials to login your Camrade account safely."
+								+ "\n\nUser name : " + userName + "\n Password  : " + userPassword
+								+ "\n\nDo not reply any mail." + "\n\nRegards" + "\nCamrade Admin");
 				msg.setSentDate(new Date());
 				Transport.send(msg);
 				System.out.println("Message sent.");
 				status = true;
 			} catch (MessagingException e) {
 				System.out.println("Erreur d'envoi, cause: " + e);
-				status=false;
+				status = false;
 			}
 
 		} else {
 			String userName = userNameOrEmail;
-			String userMail="";
-			String userPassword="";
+			String userMail = "";
+			String userPassword = "";
 			try {
-				userMail=userRepo.findByUserName(userName).getEmail();
-				userPassword=userRepo.findByUserName(userName).getPassword();
+				userMail = userRepo.findByUserName(userName).getEmail();
+				userPassword = userRepo.findByUserName(userName).getPassword();
 			} catch (Exception e) {
-				status=false;
+				status = false;
 			}
 			try {
 				Session session = Session.getDefaultInstance(props, new Authenticator() {
@@ -162,24 +166,118 @@ public class AuthendicateService {
 				msg.setFrom(new InternetAddress("mailtosureshkdm@gmail.com"));
 				msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(userMail, false));
 				msg.setSubject("Camrade Account Password");
-				msg.setText("Hello user,"
-						+ "\n\nPlease use the following credentials to login your Camrade account safely."
-						+ "\n\nUser name : "+userName
-						+ "\n Password  : "+userPassword
-						+ "\n\nDo not reply any mail."
-						+ "\n\nRegards"
-						+ "\nCamrade Admin");
+				msg.setText(
+						"Hello user," + "\n\nPlease use the following credentials to login your Camrade account safely."
+								+ "\n\nUser name : " + userName + "\n Password  : " + userPassword
+								+ "\n\nDo not reply any mail." + "\n\nRegards" + "\nCamrade Admin");
 				msg.setSentDate(new Date());
 				Transport.send(msg);
 				System.out.println("Message sent.");
 				status = true;
 			} catch (MessagingException e) {
 				System.out.println("Erreur d'envoi, cause: " + e);
-				status=false;
+				status = false;
 			}
-			
+
 		}
 		return status;
 	}
 
+	public Boolean createUserDirectory(Long userId) {
+		Boolean status = false;
+		try {
+			File file = new File("C:\\Users\\ssendrayan\\Desktop\\GitRepo\\Camrade-Personal-Project\\Camrade\\src\\assets\\users-files\\" + userId);
+			if (!file.exists()) {
+				if (file.mkdir()) {
+					System.out.println("Directory is created!");
+					status = true;
+				} else {
+					System.out.println("Failed to create directory!");
+				}
+			}
+		} catch (Exception e) {
+
+		}
+		return status;
+	}
+
+	public Boolean deleteUser(User user) {
+		Boolean status = false;
+		try {
+			userRepo.delete(user.getUserId());
+			status = true;
+		} catch (Exception e) {
+
+		}
+		return status;
+	}
+
+	public Boolean saveDefaultProfPicture(User user) {
+		Boolean status = false;
+		BufferedImage profileImage = null;
+		BufferedImage coverImage = null;
+		try {
+
+			URL profileImgUrl = new URL("http://www.conexaojovem.com/fotosalunos/Oscarlina/SemImagem.jpg");
+			URL coverImgUrl=new URL("https://mondomedia.com/application/views/channel/templates/default/_/images/default-background-cover.jpg");
+			profileImage = ImageIO.read(profileImgUrl);
+			coverImage = ImageIO.read(coverImgUrl);
+
+			ImageIO.write(profileImage, "jpg", new File("C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/" + user.getUserId() + "/Profile_picture.jpg"));
+			ImageIO.write(coverImage, "jpg", new File("C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/" + user.getUserId() + "/Cover_image.jpg"));
+			// ImageIO.write(image, "gif",new File("C:\\out.gif"));
+			// ImageIO.write(image, "png",new File("C:\\out.png"));
+			user.setProfilePicture(user.getUserId() + "/Profile_picture.jpg");
+			user.setCoverImage(user.getUserId()+ "/Cover_image.jpg");
+			userRepo.save(user);
+			status = true;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
+
+	public Boolean deleteUserDirectory(User user) {
+		Boolean status = false;
+		File directory = new File("C:\\Users\\ssendrayan\\Desktop\\GitRepo\\Camrade-Personal-Project\\Camrade\\src\\assets\\users-files\\" + user.getUserId());
+
+		// make sure directory exists
+		if (!directory.exists()) {
+			status=false;
+		} else {
+			try {
+				delete(directory);
+				status=true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return status;
+	}
+
+	public static void delete(File file) throws IOException {
+		if (file.isDirectory()) {
+			// directory is empty, then delete it
+			if (file.list().length == 0) {
+				file.delete();
+			} else {
+				// list all the directory contents
+				String files[] = file.list();
+				for (String temp : files) {
+					// construct the file structure
+					File fileDelete = new File(file, temp);
+					// recursive delete
+					delete(fileDelete);
+				}
+				// check the directory again, if empty then delete it
+				if (file.list().length == 0) {
+					file.delete();
+				}
+			}
+		} else {
+			// if file, then delete it
+			file.delete();
+		}
+	}
 }

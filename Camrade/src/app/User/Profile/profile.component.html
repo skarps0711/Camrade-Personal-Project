@@ -1,1 +1,77 @@
-<h2>Profile Component</h2>
+<div class="col-sm-12 basicProfileInfo">
+    <div>
+        <img src="/assets/users-files/{{userDetails.coverImage}}" (click)="onCoverImageClick()" class="img-responsive coverImage" alt="Image">
+        <button type="button" class="btn btn-sm btn-primary coverImageButton">Change</button>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="col-sm-4 col-sm-offset-4">
+            <img src="/assets/users-files/{{userDetails.profilePicture}}" (click)="onProfileImageClick()" class="img-responsive profilePicture" alt="Image">
+        </div>
+        <div *ngIf="showChangeProfile" class="col-sm-4 upload">
+            <div class="col-sm-12">
+                <label class="custom-file-upload">
+                <input type="file"/> Change profile picture
+            </label>
+            </div>
+            <div class="col-sm-12 remove">
+                <a class="remove-picture">Remove profile picture</a>
+            </div>
+        </div>
+        <div *ngIf="showChangeCover" class="col-sm-4 upload">
+            <div class="col-sm-12">
+                <label class="custom-file-upload">
+                <input type="file"/> Change cover image
+            </label>
+            </div>
+            <div class="col-sm-12 remove">
+                <a class="remove-picture">Remove cover image</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-4 profileLinks">
+            <a>Images</a>
+            <a>Audios</a>
+            <a>Videos</a>
+            <a>Documents</a>
+        </div>
+        <div class="col-sm-4 userInfo">
+            <div class="col-sm-12">
+                <strong class="name">{{userDetails.firstName}} {{userDetails.lastName}}</strong>
+            </div>
+            <div class="col-sm-12">
+                <strong>{{userDetails.alterName}}</strong>
+            </div>
+        </div>
+        <div class="col-sm-4  profileLinks">
+            <a (click)="showProfile()">About <span *ngIf="!showFullProfile" class="glyphicon glyphicon-triangle-bottom"></span><span *ngIf="showFullProfile" class="glyphicon glyphicon-triangle-top"></span></a>
+            <a>Change password</a>
+            <button type="button" (click)="editProfile()" class="btn btn-warning">Edit profile</button>
+        </div>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4 userDetails">
+        <strong>{{noOfMedias.noOfAudios}} Audios | {{noOfMedias.noOfDocuments}} Documents | {{noOfMedias.noOfImages}} Images | {{noOfMedias.noOfVideos}} Videos</strong>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4 userDetails">
+        <p>{{userDetails.about}}</p>
+    </div>
+</div>
+
+<!-- Full profile info -->
+<div *ngIf="showFullProfile" class="col-sm-8 col-sm-offset-2 fullProfile">
+    <pre>
+          <strong>Name : </strong>{{userDetails.firstName}} {{userDetails.lastName}}
+<strong>Alternate name : </strong>{{userDetails.alterName}}
+         <strong>Email : </strong>{{userDetails.email}}
+  <strong>Phone number : </strong>{{userDetails.phoneNo}}
+      <strong>Birthday : </strong>{{userDetails.birthDate | date:fullDate}}
+        <strong>Gender : </strong>{{userDetails.gender}}
+       <strong>Address : </strong>{{userDetails.address}}
+   <strong>School name : </strong>{{userDetails.schoolName}}
+  <strong>College name : </strong>{{userDetails.collegeName}}
+      <strong>Works at : </strong>{{userDetails.work}}
+         <strong>About : </strong>{{userDetails.about}}
+        <strong>Quotes : </strong>{{userDetails.quotes}} 
+            </pre>
+</div>
