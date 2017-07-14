@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `camrade` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `camrade`;
 -- MySQL dump 10.13  Distrib 5.6.17, for Win32 (x86)
 --
 -- Host: localhost    Database: camrade
@@ -29,10 +27,11 @@ CREATE TABLE `audio` (
   `owner_id` int(11) NOT NULL,
   `audio_path` varchar(1000) NOT NULL,
   `permitted_persons_id` varchar(20000) NOT NULL,
+  `added_date` datetime NOT NULL,
   PRIMARY KEY (`audio_id`),
   KEY `audio_owner_id_idx` (`owner_id`),
   CONSTRAINT `audio_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,6 +40,7 @@ CREATE TABLE `audio` (
 
 LOCK TABLES `audio` WRITE;
 /*!40000 ALTER TABLE `audio` DISABLE KEYS */;
+INSERT INTO `audio` VALUES (1,20,'audio_path','10,12','2017-02-12 00:00:00'),(2,23,'audio_path','10,12','2017-02-12 00:00:00');
 /*!40000 ALTER TABLE `audio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,10 +85,11 @@ CREATE TABLE `document` (
   `owner_id` int(11) NOT NULL,
   `document_path` varchar(1000) NOT NULL,
   `permitted_persons_id` varchar(20000) NOT NULL,
+  `added_date` datetime NOT NULL,
   PRIMARY KEY (`document_id`),
   KEY `owner_id_idx` (`owner_id`),
   CONSTRAINT `document_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,6 +98,7 @@ CREATE TABLE `document` (
 
 LOCK TABLES `document` WRITE;
 /*!40000 ALTER TABLE `document` DISABLE KEYS */;
+INSERT INTO `document` VALUES (1,20,'document_path','10,12','2017-02-12 00:00:00'),(2,23,'document_path','10,12','2017-02-12 00:00:00');
 /*!40000 ALTER TABLE `document` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,8 +145,8 @@ CREATE TABLE `friends` (
   PRIMARY KEY (`friend_id`),
   KEY `friend_user_id_idx` (`user_id`),
   KEY `friend_friend_of_idx` (`friend_of`),
-  CONSTRAINT `friend_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `friend_friend_of` FOREIGN KEY (`friend_of`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `friend_friend_of` FOREIGN KEY (`friend_of`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `friend_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -158,30 +160,32 @@ LOCK TABLES `friends` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `images`
+-- Table structure for table `image`
 --
 
-DROP TABLE IF EXISTS `images`;
+DROP TABLE IF EXISTS `image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `images` (
+CREATE TABLE `image` (
   `image_id` int(11) NOT NULL AUTO_INCREMENT,
   `owner_id` int(11) NOT NULL,
   `image_path` varchar(1000) NOT NULL,
   `permitted_persons_id` varchar(20000) NOT NULL,
+  `added_date` datetime NOT NULL,
   PRIMARY KEY (`image_id`),
   KEY `owner_id_idx` (`owner_id`),
   CONSTRAINT `owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `images`
+-- Dumping data for table `image`
 --
 
-LOCK TABLES `images` WRITE;
-/*!40000 ALTER TABLE `images` DISABLE KEYS */;
-/*!40000 ALTER TABLE `images` ENABLE KEYS */;
+LOCK TABLES `image` WRITE;
+/*!40000 ALTER TABLE `image` DISABLE KEYS */;
+INSERT INTO `image` VALUES (1,20,'image_path','10,12','2017-02-12 00:00:00'),(2,23,'image_path','10,12','2017-02-12 00:00:00');
+/*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -203,6 +207,7 @@ CREATE TABLE `user` (
   `birth_date` datetime NOT NULL,
   `gender` varchar(6) NOT NULL,
   `profile_picture` varchar(1000) DEFAULT NULL,
+  `cover_image` varchar(1000) DEFAULT NULL,
   `address` varchar(1000) DEFAULT NULL,
   `quotes` varchar(2000) DEFAULT NULL,
   `about` varchar(2000) DEFAULT NULL,
@@ -210,7 +215,7 @@ CREATE TABLE `user` (
   `school_name` varchar(150) DEFAULT NULL,
   `college_name` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -219,7 +224,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Suresh','Kumar','skarps','SurRamLog','skarps','testmail@gmail.com','9876543210','1995-11-07 00:00:00','male','profile_pic.jpg','address','my quotes','about me','my work','my school','my college'),(3,'test1','test1','testUser','qq','testUser','test@mail.com','9876543210','2017-06-08 00:00:00','male','qq','qq','qq','qq','qq','qq','qq');
+INSERT INTO `user` VALUES (1,'Suresh','Kumar','skarps','SurRamLog','skarps','testmail@gmail.com','9876543210','1995-11-07 00:00:00','male','profile_pic.jpg',NULL,'address','my quotes','about me','my work','my school','my college'),(12,'suresh','suresh','skarps2','','skarps2','test@gmail.com','9876543210','2017-07-12 00:00:00','male','',NULL,'','','','','',''),(13,'Kumar','Suresh','kumar','','sureshkumar','kumar@mail.com','1234567890','2017-07-14 00:00:00','male','',NULL,'','','','','',''),(14,'suresh','sdsds','asaSASAA','','111111','asa@hj.hgfh','9876543210','2017-07-06 00:00:00','male','',NULL,'','','','','',''),(15,'Subbu','Mani','subbu','','subbumani','subbu@mail.com','9876543210','2017-07-13 00:00:00','male','',NULL,'','','','','',''),(16,'test','test','skarpww','','111111','11@hh.yy','9999999999','2017-07-21 00:00:00','male','',NULL,'','','','','',''),(17,'suresh','suresh','suresh','','suresh','mailtosureshkdm@gmail.com','9750169268','2017-07-07 00:00:00','male','',NULL,'','','','','',''),(18,'qqqqq','qqqqq','qqqqq','','qqqqqq','qq@qq.qq','1111111111','2017-07-20 00:00:00','male','D:\\Camrade Storage\\18\\Profile_picture.jpg',NULL,'','','','','',''),(19,'test','test','testt','','testtt','te@sst.ss','1111111111','2017-07-13 00:00:00','male','19\\Profile_picture.jpg',NULL,'','','','','',''),(20,'www','www','wwwwww','','wwwwww','ww@ww.ww','1111111111','2017-07-13 00:00:00','male','20/Profile_picture.jpg',NULL,'','','','','',''),(21,'sssss','sssss','ssssss','','ssssss','sss@ss.ss','9999999999','2017-07-12 00:00:00','male','21/Profile_picture.jpg','21/Cover_image.jpg','','','','','',''),(22,'suresh','suresh','111111','','111111','11@aa.aaa','1111111111','2017-07-19 00:00:00','male','22/Profile_picture.jpg','22/Cover_image.jpg','','','','','',''),(23,'Suresh','Kumar S','suresh33','SKARPS','suresh33','mailtosureshkdm@gmail.co','9876543210','2017-07-20 00:00:00','male','23/Profile_picture.jpg','23/Cover_image.jpg','Test address','My quotes will be here1','About me will be here wwwwww','test office','test school','testcollege');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -235,6 +240,7 @@ CREATE TABLE `video` (
   `owner_id` int(11) NOT NULL,
   `video_path` varchar(1000) NOT NULL,
   `permitted_persons_id` varchar(20000) NOT NULL,
+  `added_date` datetime NOT NULL,
   PRIMARY KEY (`video_id`),
   KEY `video_owner_id_idx` (`owner_id`),
   CONSTRAINT `video_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -247,6 +253,7 @@ CREATE TABLE `video` (
 
 LOCK TABLES `video` WRITE;
 /*!40000 ALTER TABLE `video` DISABLE KEYS */;
+INSERT INTO `video` VALUES (1,20,'video_path','10,12','2017-02-12 00:00:00'),(2,23,'video_path','10,12','2017-02-12 00:00:00');
 /*!40000 ALTER TABLE `video` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -259,4 +266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-30 18:33:42
+-- Dump completed on 2017-07-14 17:41:53
