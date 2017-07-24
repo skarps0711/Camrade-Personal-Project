@@ -51,7 +51,6 @@ export class SignupComponent implements OnInit {
         this.onSignupValueChanged(); // (re)set validation messages now 
     }
     viewLoginForm() {
-        console.log("sdsd");
         this.router.navigate(['/users/login']);
     }
     onSignupUser() {

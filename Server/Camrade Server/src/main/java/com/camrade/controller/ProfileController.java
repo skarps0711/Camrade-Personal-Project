@@ -1,5 +1,7 @@
 package com.camrade.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.camrade.entity.User;
 import com.camrade.model.NoOfMedias;
+import com.camrade.model.PasswordChange;
 import com.camrade.model.SaveImage;
 import com.camrade.service.ProfileService;
 
@@ -39,7 +42,7 @@ public class ProfileController {
 	}
 	
 	@RequestMapping(value = "/user/profile/updateimage", method = RequestMethod.PUT)
-	public ResponseEntity<?> saveImage(@RequestBody SaveImage imageDetails){
+	public ResponseEntity<?> updateImage(@RequestBody SaveImage imageDetails) throws IOException{
 		Boolean status=profileService.saveImage(imageDetails);
 		User user=null;
 		if(status!=false){
@@ -51,7 +54,14 @@ public class ProfileController {
 		}
 		return new ResponseEntity<User>(user,HttpStatus.BAD_REQUEST);
 	}
-
-
+	
+	@RequestMapping(value = "/user/profile/updatepassword", method = RequestMethod.PUT)
+	public ResponseEntity<?> updatePassword(@RequestBody PasswordChange passwordChange){
+		User user=profileService.changePassword(passwordChange);
+		if(user!=null){
+			return new ResponseEntity<User>(user,HttpStatus.OK);
+		}
+		return new ResponseEntity<User>(user,HttpStatus.BAD_REQUEST);
+	}
 
 }

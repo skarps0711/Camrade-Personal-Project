@@ -110,7 +110,7 @@ DROP TABLE IF EXISTS `friend_request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `friend_request` (
-  `request_id` int(11) NOT NULL,
+  `request_id` int(11) NOT NULL AUTO_INCREMENT,
   `request_from` int(11) NOT NULL,
   `request_to` int(11) NOT NULL,
   `status` varchar(10) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE `friend_request` (
   KEY `request_request_to_idx` (`request_to`),
   CONSTRAINT `request_request_from` FOREIGN KEY (`request_from`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `request_request_to` FOREIGN KEY (`request_to`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,6 +128,7 @@ CREATE TABLE `friend_request` (
 
 LOCK TABLES `friend_request` WRITE;
 /*!40000 ALTER TABLE `friend_request` DISABLE KEYS */;
+INSERT INTO `friend_request` VALUES (22,21,22,'pending');
 /*!40000 ALTER TABLE `friend_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,7 +140,7 @@ DROP TABLE IF EXISTS `friends`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `friends` (
-  `friend_id` int(11) NOT NULL,
+  `friend_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `friend_of` int(11) NOT NULL,
   PRIMARY KEY (`friend_id`),
@@ -147,7 +148,7 @@ CREATE TABLE `friends` (
   KEY `friend_friend_of_idx` (`friend_of`),
   CONSTRAINT `friend_friend_of` FOREIGN KEY (`friend_of`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `friend_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,6 +157,7 @@ CREATE TABLE `friends` (
 
 LOCK TABLES `friends` WRITE;
 /*!40000 ALTER TABLE `friends` DISABLE KEYS */;
+INSERT INTO `friends` VALUES (11,22,23),(12,22,24),(13,22,25),(14,25,23),(15,27,23),(16,23,24),(17,23,21);
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,6 +191,39 @@ INSERT INTO `image` VALUES (1,20,'image_path','10,12','2017-02-12 00:00:00'),(2,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `notification`
+--
+
+DROP TABLE IF EXISTS `notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notification` (
+  `notification_id` int(11) NOT NULL AUTO_INCREMENT,
+  `notify_from` int(11) NOT NULL,
+  `notify_to` int(11) NOT NULL,
+  `notify_message` varchar(1000) NOT NULL,
+  `added_date` datetime NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `notification_from` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`notification_id`),
+  KEY `notify_from_idx` (`notify_from`),
+  KEY `notify_to_idx` (`notify_to`),
+  CONSTRAINT `notification_from` FOREIGN KEY (`notify_from`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `notify_to` FOREIGN KEY (`notify_to`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notification`
+--
+
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+INSERT INTO `notification` VALUES (2,22,23,'suresh suresh accepted your friend request','2017-07-20 12:29:04','unseen',NULL),(3,22,24,'suresh suresh accepted your friend request','2017-07-20 12:29:08','unseen',NULL),(4,22,25,'suresh suresh accepted your friend request','2017-07-20 12:29:11','unseen',NULL),(5,25,23,'Suresh Kani accepted your friend request','2017-07-20 12:31:56','unseen',NULL),(6,27,23,'Suresh Raj accepted your friend request','2017-07-20 12:32:08','unseen',NULL),(7,23,24,'Suresh Kumar S accepted your friend request','2017-07-20 12:36:32','unseen',NULL),(8,23,21,'Suresh Kumar S accepted your friend request','2017-07-20 12:38:11','unseen',NULL);
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -215,7 +250,7 @@ CREATE TABLE `user` (
   `school_name` varchar(150) DEFAULT NULL,
   `college_name` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +259,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Suresh','Kumar','skarps','SurRamLog','skarps','testmail@gmail.com','9876543210','1995-11-07 00:00:00','male','profile_pic.jpg',NULL,'address','my quotes','about me','my work','my school','my college'),(12,'suresh','suresh','skarps2','','skarps2','test@gmail.com','9876543210','2017-07-12 00:00:00','male','',NULL,'','','','','',''),(13,'Kumar','Suresh','kumar','','sureshkumar','kumar@mail.com','1234567890','2017-07-14 00:00:00','male','',NULL,'','','','','',''),(14,'suresh','sdsds','asaSASAA','','111111','asa@hj.hgfh','9876543210','2017-07-06 00:00:00','male','',NULL,'','','','','',''),(15,'Subbu','Mani','subbu','','subbumani','subbu@mail.com','9876543210','2017-07-13 00:00:00','male','',NULL,'','','','','',''),(16,'test','test','skarpww','','111111','11@hh.yy','9999999999','2017-07-21 00:00:00','male','',NULL,'','','','','',''),(17,'suresh','suresh','suresh','','suresh','mailtosureshkdm@gmail.com','9750169268','2017-07-07 00:00:00','male','',NULL,'','','','','',''),(18,'qqqqq','qqqqq','qqqqq','','qqqqqq','qq@qq.qq','1111111111','2017-07-20 00:00:00','male','D:\\Camrade Storage\\18\\Profile_picture.jpg',NULL,'','','','','',''),(19,'test','test','testt','','testtt','te@sst.ss','1111111111','2017-07-13 00:00:00','male','19\\Profile_picture.jpg',NULL,'','','','','',''),(20,'www','www','wwwwww','','wwwwww','ww@ww.ww','1111111111','2017-07-13 00:00:00','male','20/Profile_picture.jpg',NULL,'','','','','',''),(21,'sssss','sssss','ssssss','','ssssss','sss@ss.ss','9999999999','2017-07-12 00:00:00','male','21/Profile_picture.jpg','21/Cover_image.jpg','','','','','',''),(22,'suresh','suresh','111111','','111111','11@aa.aaa','1111111111','2017-07-19 00:00:00','male','22/Profile_picture.jpg','22/Cover_image.jpg','','','','','',''),(23,'Suresh','Kumar S','suresh33','SKARPS','suresh33','mailtosureshkdm@gmail.co','9876543210','2017-07-20 00:00:00','male','23/Profile_picture.jpg','23/Cover_image.jpg','Test address','My quotes will be here1','About me will be here wwwwww','test office','test school','testcollege');
+INSERT INTO `user` VALUES (20,'www','www','wwwwww','','wwwwww','ww@ww.ww','1111111111','2017-07-13 00:00:00','male','20/Profile_picture.jpg',NULL,'','','','','',''),(21,'sssss','sssss','ssssss','','ssssss','sss@ss.ss','9999999999','2017-07-12 00:00:00','male','21/Profile_picture.jpg','21/Cover_image.jpg','','','','','',''),(22,'suresh','suresh','111111','iamsuresh','111111','11@aa.aaa','1111111111','2017-07-19 00:00:00','male','22/Profile_picture.jpg','22/Cover_image.jpg','','','','','',''),(23,'Suresh','Kumar S','suresh33','SKARPS','qqqqqq','mailtosureshkdm@gmail.co','9876543210','2017-07-20 00:00:00','male','23/Profile_picture.jpg','23/Cover_image.jpg','Test address','My quotes will be here1q','I am a good boy..','test office','test school','testcollege'),(24,'Ram','Suresh','ramsuresh','','111111','klnknnnnnlnl@jk.sds','9876543210','2017-07-14 00:00:00','male','24/Profile_picture.jpg','24/Cover_image.jpg','','','','','',''),(25,'Suresh','Kani','sureshkani','I am kani','111111','dwd@jbj.ww','9876543210','2017-07-20 00:00:00','male','25/Profile_picture.jpg','25/Cover_image.jpg','','','','','',''),(26,'Kani','Suresh','kanisuresh','KaniSuresh','111111','bjb@hjb.jgjg','9876543210','2017-07-21 00:00:00','male','26/Profile_picture.jpg','26/Cover_image.jpg','','','','','',''),(27,'Suresh','Raj','sureshraj','','111111','dw@hvjh.jf','9876543210','2017-07-19 00:00:00','male','27/Profile_picture.jpg','27/Cover_image.jpg','','','','','',''),(28,'Suresh','Kumar','sureshkumar','','111111','jkjn@jhj.jh','9876543210','2017-07-13 00:00:00','male','28/Profile_picture.jpg','28/Cover_image.jpg','','','','','','');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,4 +301,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-07-14 17:41:53
+-- Dump completed on 2017-07-24 12:39:05

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core'
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { UserService } from "app/User/user.service";
 import { UserDetails } from "app/User/user-details";
 
@@ -11,7 +11,7 @@ import { UserDetails } from "app/User/user-details";
 export class UserComponent implements OnInit {
     userId: number;
     userDetails:UserDetails=new UserDetails();
-    constructor(private activatedRoute: ActivatedRoute,private userService:UserService) { }
+    constructor(private activatedRoute: ActivatedRoute,private userService:UserService,private router:Router) { }
 
     ngOnInit() {
         this.activatedRoute.params.subscribe((params: Params) => {

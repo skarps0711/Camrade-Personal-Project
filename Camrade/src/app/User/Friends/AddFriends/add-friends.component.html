@@ -1,17 +1,27 @@
-<form class="form-horizontal">
+<form class="form-horizontal searchBar">
     <div class="input-group form-group">
-        <input type="text" #userField (keyup)="suggestFriends(userField.value)" class="form-control" placeholder="Phone number or email">
+        <input type="text" #userField (keyup)="suggestFriends(userField.value)" class="form-control" placeholder="Name or phone number or email">
         <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
     </div>
 </form>
-<div class="col-sm-12">
-    <div class="col-sm-4" *ngFor="let sugFriends of friendDetails">
-        <div class="col-sm-5">
-            <p>{{sugFriends.profilePicture}}</p>
+<div class="col-sm-4 userDetails" *ngFor="let sugFriends of friendDetails">
+    <div class="col-sm-5">
+        <img src="/assets/users-files/{{sugFriends.profilePicture}}" class="img-responsive profilePicture" (click)="visitFriendProfile(sugFriends.userId)"
+            style="height:110px;width:80px" alt="Image">
+    </div>
+    <div class="col-sm-7">
+        <a (click)="visitFriendProfile(sugFriends.userId)">{{sugFriends.firstName}} {{sugFriends.lastName}}</a>
+        <p>{{sugFriends.alterName}}</p>
+    </div>
+    <div *ngIf="!sugFriends.isRequested">
+        <div *ngIf="!sugFriends.isFriend" class="buttons">
+            <button type="button" class="btn btn-sm btn-primary" (click)="sendRequest(sugFriends.userId)">Add Friend</button>
         </div>
-        <div class="col-sm-7">
-            <p>{{sugFriends.firstName}} {{sugFriends.lastName}}</p>
-            <button type="button" class="btn btn-sm btn-success">Add Friend</button>
+        <div *ngIf="sugFriends.isFriend" class="buttons">
+            <button type="button" class="btn btn-sm btn-success">Message</button>
         </div>
+    </div>
+    <div *ngIf="sugFriends.isRequested" class="buttons">
+        <button [disabled] type="button" class="btn btn-sm btn-warning">Requested</button>
     </div>
 </div>

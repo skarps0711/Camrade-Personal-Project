@@ -16,6 +16,8 @@ import { InviteFriendsComponent } from "app/User/Friends/InviteFriends/invite-fr
 import { PersonalMessageComponent } from "app/User/Friends/PersonalMessage/personal-message.component";
 import { FriendRequestComponent } from "app/User/Friends/FriendRequest/friend-request.component";
 import { EditProfileComponent } from "app/User/Profile/Edit-Profile/edit-profile.component";
+import { ChangePasswordComponent } from "app/User/Profile/Change-Password/change-password.component";
+import { FriendProfileComponent } from "app/User/Friends/Friend-Profile/friend-profile.component";
 
 const userRoutes: Routes = [
   {
@@ -24,8 +26,13 @@ const userRoutes: Routes = [
     children: [
       { path: '', component: MediaComponent },
       { path: 'home', component: MediaComponent },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'editprofile', component: EditProfileComponent },
+      {
+        path: 'profile', component: ProfileComponent,
+        children: [
+          { path: 'editprofile', component: EditProfileComponent },
+          { path: 'changepassword', component: ChangePasswordComponent }
+        ]
+      },
       { path: 'communication/messages', component: MessagesComponent },
       { path: 'communication/notifications', component: NotificationsComponent },
       {
@@ -48,7 +55,8 @@ const userRoutes: Routes = [
           { path: 'addfriends', component: AddFriendsComponent },
           { path: 'friendrequest', component: FriendRequestComponent },
           { path: 'invitefriends', component: InviteFriendsComponent },
-          { path: 'personalmessage', component: PersonalMessageComponent }
+          { path: 'personalmessage', component: PersonalMessageComponent },
+          { path: ':friendId/profile', component: FriendProfileComponent }
         ]
       }
     ]

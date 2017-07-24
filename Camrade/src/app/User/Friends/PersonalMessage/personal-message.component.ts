@@ -2,6 +2,7 @@ import { Component } from '@angular/core'
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FriendsService } from "app/User/Friends/friends.service";
 import { SendEmail } from "app/User/Friends/send-email";
+import { ActivatedRoute, Params } from "@angular/router";
 
 @Component({
     templateUrl: './personal-message.component.html',
@@ -9,15 +10,19 @@ import { SendEmail } from "app/User/Friends/send-email";
 })
 
 export class PersonalMessageComponent {
+    userId:number;
     formValid: boolean = false;
     isMessageSent: boolean = false;
     isMessageSentError: boolean = false;
     messageForm: FormGroup;
     emailDetails: SendEmail;
 
-    constructor(private fb: FormBuilder, private friendsService: FriendsService) { }
+    constructor(private fb: FormBuilder, private activatedRoute: ActivatedRoute, private friendsService: FriendsService) { }
 
     ngOnInit() {
+         this.activatedRoute.parent.params.subscribe((params: Params) => {
+            this.userId = params['id'];
+        });
         this.createForm();
     }
 
@@ -33,7 +38,7 @@ export class PersonalMessageComponent {
 
     onSubmit() {
         this.emailDetails = this.messageForm.value;
-        this.friendsService.sendEmail(this.emailDetails).subscribe((data) => this.sendEmailSuccess(data), (error) => this.sendEmailFailure(error));
+        this.friendsService.sendEmail(this.emailDetails,this.userId).subscribe((data) => this.sendEmailSuccess(data), (error) => this.sendEmailFailure(error));
     }
     sendEmailSuccess(data) {
         this.isMessageSent = true;

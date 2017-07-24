@@ -24,12 +24,16 @@ import { FriendRequestComponent } from "app/User/Friends/FriendRequest/friend-re
 import { UserService } from "app/User/user.service";
 import { ProfileService } from "app/User/Profile/profile.service";
 import { EditProfileComponent } from "app/User/Profile/Edit-Profile/edit-profile.component";
+import { ChangePasswordComponent } from "app/User/Profile/Change-Password/change-password.component";
+import { FriendProfileComponent } from "app/User/Friends/Friend-Profile/friend-profile.component";
+import { CommunicationService } from "app/User/Communication/communication.service";
 
 @NgModule({
   declarations: [
-    UserComponent,MediaComponent,ProfileComponent,MessagesComponent,NotificationsComponent,FriendsComponent,
-    ChatComponent,MyMediaComponent,SharedMediaComponent,ShareMediaComponent,UploadMediaComponent,AddFriendsComponent,
-    InviteFriendsComponent,MyFriendsComponent,PersonalMessageComponent,FriendRequestComponent,EditProfileComponent
+    UserComponent, MediaComponent, ProfileComponent, MessagesComponent, NotificationsComponent, FriendsComponent,
+    ChatComponent, MyMediaComponent, SharedMediaComponent, ShareMediaComponent, UploadMediaComponent, AddFriendsComponent,
+    InviteFriendsComponent, MyFriendsComponent, PersonalMessageComponent, FriendRequestComponent, EditProfileComponent,
+    ChangePasswordComponent, FriendProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -38,10 +42,11 @@ import { EditProfileComponent } from "app/User/Profile/Edit-Profile/edit-profile
     UserRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [UserService,FriendsService,ProfileService],
-  exports:[UserComponent,MediaComponent,ProfileComponent,MessagesComponent,NotificationsComponent,FriendsComponent,
-  ChatComponent,MyMediaComponent,SharedMediaComponent,ShareMediaComponent,UploadMediaComponent,AddFriendsComponent,
-    InviteFriendsComponent,MyFriendsComponent,PersonalMessageComponent,FriendRequestComponent,EditProfileComponent
+  providers: [UserService, FriendsService, ProfileService,CommunicationService],
+  exports: [UserComponent, MediaComponent, ProfileComponent, MessagesComponent, NotificationsComponent, FriendsComponent,
+    ChatComponent, MyMediaComponent, SharedMediaComponent, ShareMediaComponent, UploadMediaComponent, AddFriendsComponent,
+    InviteFriendsComponent, MyFriendsComponent, PersonalMessageComponent, FriendRequestComponent, EditProfileComponent,
+    ChangePasswordComponent, FriendProfileComponent
   ]
 })
 export class UserModule { }

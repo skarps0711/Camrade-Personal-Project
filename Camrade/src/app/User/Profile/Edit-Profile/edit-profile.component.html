@@ -3,12 +3,7 @@
         <div class="panel">
             <div class="panel-body">
                 <form class="form-horizontal" [formGroup]="userForm" (submit)="onSubmit()" novalidate>
-                    <div class="col-sm-12 profileImage">
-                        <div class="col-sm-11">
-                            <img src="/assets/users-files/{{userDetails.profilePicture}}" class="img-responsive profilePicture" alt="Image">
-                           
-                        </div>
-                    </div>
+                    
                     <div class="col-md-12">
                         <div class="col-md-5">
                             <div class="input-group form-group">
@@ -132,7 +127,6 @@
                         <button type="button" (click)="onCancel()" class="btn btn-danger">Cancel</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

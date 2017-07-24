@@ -2,11 +2,13 @@ package com.camrade.entity;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -68,6 +70,17 @@ public class User {
 
 	@Column(name = "college_name")
 	private String collegeName;
+
+	/*private Notification notify;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	public Notification getNotify() {
+		return notify;
+	}
+
+	public void setNotify(Notification notify) {
+		this.notify = notify;
+	}*/
 
 	public Long getUserId() {
 		return userId;

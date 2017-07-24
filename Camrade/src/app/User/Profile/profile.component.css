@@ -8,9 +8,10 @@ div{
 .profilePicture{
     display: block;
     margin: auto;
-    margin-top: -70px;
+    margin-top: -90px;
     max-width: 200px;
-    border-radius: 75px;
+    border-radius: 50px;
+    width:50% !important;
 }
 a{
     margin-right: 5px;
@@ -41,12 +42,6 @@ a:hover{
 .userDetails strong{
     color:#B2BEB5;
 }
-.coverImageButton{
-    position: absolute;
-    right:15px;
-    top:2px;
-    opacity: 0.7;
-}
 input[type="file"] {
     display: none;
 }
@@ -55,18 +50,18 @@ input[type="file"] {
     padding: 6px 12px;
     cursor: pointer;
     border-radius: 10px;
-     background-color: #f0ad4e;
+    background-color: #f0ad4e;
     
 }
 .remove-picture{
-     border: 1px solid #ccc;
+    border: 1px solid #ccc;
     padding: 6px 12px;
     cursor: pointer;
     border-radius: 10px;
     margin-top: 35px;
     font-weight: 550;
     color:white;
-     background-color: #f0ad4e;
+    background-color: #f0ad4e;
      
 }
 .custom-file-upload:hover,.remove-picture:hover{
@@ -77,8 +72,7 @@ input[type="file"] {
     color:white; 
 }
 .remove{
-    margin-left: 8px;
-    
+    margin-left: 8px;  
 }
 img{
     cursor: pointer;

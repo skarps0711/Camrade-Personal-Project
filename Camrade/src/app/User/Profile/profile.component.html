@@ -1,31 +1,30 @@
 <div class="col-sm-12 basicProfileInfo">
     <div>
         <img src="/assets/users-files/{{userDetails.coverImage}}" (click)="onCoverImageClick()" class="img-responsive coverImage" alt="Image">
-        <button type="button" class="btn btn-sm btn-primary coverImageButton">Change</button>
     </div>
 
     <div class="col-sm-12">
         <div class="col-sm-4 col-sm-offset-4">
-            <img src="/assets/users-files/{{userDetails.profilePicture}}" (click)="onProfileImageClick()" class="img-responsive profilePicture" alt="Image">
+            <img src="/assets/users-files/{{userDetails.profilePicture}}" (click)="onProfileImageClick()" class="img-responsive profilePicture" style="height:180px" alt="Image" >
         </div>
         <div *ngIf="showChangeProfile" class="col-sm-4 upload">
             <div class="col-sm-12">
                 <label class="custom-file-upload">
-                <input type="file"/> Change profile picture
+                <input (change)="onChangeProfilePic($event)" type="file" accept="image/*"/> Change profile picture
             </label>
             </div>
             <div class="col-sm-12 remove">
-                <a class="remove-picture">Remove profile picture</a>
+                <a class="remove-picture" (click)="onRemoveProfilePic()">Remove profile picture</a>
             </div>
         </div>
         <div *ngIf="showChangeCover" class="col-sm-4 upload">
             <div class="col-sm-12">
                 <label class="custom-file-upload">
-                <input type="file"/> Change cover image
+                <input type="file" accept="image/*" (change)="onChangeCoverImage($event)"/> Change cover image
             </label>
             </div>
             <div class="col-sm-12 remove">
-                <a class="remove-picture">Remove cover image</a>
+                <a class="remove-picture" (click)="onRemoveCoverImage()">Remove cover image</a>
             </div>
         </div>
     </div>
@@ -46,7 +45,7 @@
         </div>
         <div class="col-sm-4  profileLinks">
             <a (click)="showProfile()">About <span *ngIf="!showFullProfile" class="glyphicon glyphicon-triangle-bottom"></span><span *ngIf="showFullProfile" class="glyphicon glyphicon-triangle-top"></span></a>
-            <a>Change password</a>
+            <a (click)="changePassword()">Change password</a>
             <button type="button" (click)="editProfile()" class="btn btn-warning">Edit profile</button>
         </div>
     </div>
@@ -75,3 +74,4 @@
         <strong>Quotes : </strong>{{userDetails.quotes}} 
             </pre>
 </div>
+<router-outlet></router-outlet>

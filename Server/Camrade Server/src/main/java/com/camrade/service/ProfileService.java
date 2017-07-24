@@ -1,7 +1,11 @@
 package com.camrade.service;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -15,6 +19,7 @@ import com.camrade.entity.Image;
 import com.camrade.entity.User;
 import com.camrade.entity.Video;
 import com.camrade.model.NoOfMedias;
+import com.camrade.model.PasswordChange;
 import com.camrade.model.SaveImage;
 import com.camrade.repository.AudioRepository;
 import com.camrade.repository.DocumentRepository;
@@ -70,46 +75,100 @@ public class ProfileService {
 		}
 		return noOfMedias;
 	}
-	
-	public User updateUser(User userDetails){
-		User user=null;
-		try{
-			user=userRepo.save(userDetails);
-		}catch(Exception e){
+
+	public User updateUser(User userDetails) {
+		User user = null;
+		try {
+			user = userRepo.save(userDetails);
+		} catch (Exception e) {
 			e.printStackTrace();
-			user=null;
+			user = null;
 		}
 		return user;
 	}
-	
-	public Boolean saveImage(SaveImage imageDetails){
-		Boolean status=false;
-		BufferedImage image=null;
-		if(imageDetails.getInmageType().equalsIgnoreCase("profilePicture")){
-			try{
-				image=ImageIO.read(imageDetails.getImage());
-				ImageIO.write(image, "jpg", new File("C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/" + imageDetails.getUserId() + "/Profile_picture.jpg"));
-				status=true;
-			}catch(Exception e){
-				status=false;
+
+	public Boolean saveImage(SaveImage imageDetails) throws IOException {
+		Boolean status = false;
+		String receiveImage = "data:image/png;base64," + imageDetails.getByteImage();
+		String base64Image = receiveImage.split(",")[1];
+		byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
+		BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
+		System.out.println(image);
+		if (imageDetails.getImageType().equalsIgnoreCase("changeProfilePicture")) {
+			try {
+				ImageIO.write(image, "jpg",
+						new File(
+								"C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/"
+										+ imageDetails.getUserId() + "/Profile_picture.jpg"));
+				status = true;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				status = false;
 			}
-		}
-		else{
-			try{
-				image=ImageIO.read(imageDetails.getImage());
-				ImageIO.write(image, "jpg", new File("C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/" + imageDetails.getUserId() + "/Cover_image.jpg"));
-				status=true;
-			}catch(Exception e){
-				status=false;
+		} else if (imageDetails.getImageType().equalsIgnoreCase("changeCoverImage")) {
+			try {
+
+				ImageIO.write(image, "jpg",
+						new File(
+								"C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/"
+										+ imageDetails.getUserId() + "/Cover_image.jpg"));
+				status = true;
+			} catch (Exception e) {
+				status = false;
+			}
+		} else if (imageDetails.getImageType().equalsIgnoreCase("removeProfilePicture")) {
+			try {
+				BufferedImage profileImage = null;
+				URL profileImgUrl = new URL("http://www.conexaojovem.com/fotosalunos/Oscarlina/SemImagem.jpg");
+				profileImage = ImageIO.read(profileImgUrl);
+				ImageIO.write(profileImage, "jpg",
+						new File(
+								"C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/"
+										+ imageDetails.getUserId() + "/Profile_picture.jpg"));
+				status = true;
+			} catch (Exception e) {
+				status = false;
+			}
+		} else {
+			try {
+				BufferedImage coverImage = null;
+				URL coverImgUrl = new URL(
+						"https://mondomedia.com/application/views/channel/templates/default/_/images/default-background-cover.jpg");
+				coverImage = ImageIO.read(coverImgUrl);
+				ImageIO.write(coverImage, "jpg",
+						new File(
+								"C:/Users/ssendrayan/Desktop/GitRepo/Camrade-Personal-Project/Camrade/src/assets/users-files/"
+										+ imageDetails.getUserId() + "/Cover_image.jpg"));
+				status = true;
+			} catch (Exception e) {
+				status = false;
 			}
 		}
 		return status;
 	}
+
+	public User getUser(Long userId) {
+		User user = null;
+		try {
+			user = userRepo.findByUserId(userId);
+		} catch (Exception e) {
+			user = null;
+		}
+		return user;
+	}
 	
-	public User getUser(Long userId){
+	public User changePassword(PasswordChange passwordChange){
 		User user=null;
 		try{
-			user=userRepo.findByUserId(userId);
+			user=userRepo.findByUserId(passwordChange.getUserId());
+			if(user.getPassword().equals(passwordChange.getOldPassword())){
+				user.setPassword(passwordChange.getNewPassword());
+				user=userRepo.save(user);
+			}
+			else{
+				user=null;
+			}
 		}catch(Exception e){
 			user=null;
 		}

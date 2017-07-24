@@ -1,0 +1,134 @@
+<div class="col-sm-12 basicProfileInfo">
+    <div>
+        <img src="/assets/users-files/{{userDetails.coverImage}}" class="img-responsive coverImage" alt="Image">
+    </div>
+
+    <div class="col-sm-12">
+        <div class="col-sm-4 col-sm-offset-4">
+            <img src="/assets/users-files/{{userDetails.profilePicture}}" class="img-responsive profilePicture" style="height:165px"
+                alt="Image">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-4 profileLinks">
+            <a (click)="showProfile()">About <span *ngIf="!showFullProfile" class="glyphicon glyphicon-triangle-bottom"></span><span *ngIf="showFullProfile" class="glyphicon glyphicon-triangle-top"></span></a>
+        </div>
+        <div class="col-sm-4 userInfo">
+            <div class="col-sm-12">
+                <strong class="name">{{userDetails.firstName}} {{userDetails.lastName}}</strong>
+            </div>
+            <div class="col-sm-12">
+                <strong>{{userDetails.alterName}}</strong>
+            </div>
+        </div>
+        <div *ngIf="!friendDetails.isRequestedMe">
+            <div *ngIf="!friendDetails.isRequested">
+                <div *ngIf="!friendDetails.isFriend" class="col-sm-4  profileLinks">
+                    <button type="button" (click)="editProfile()" class="btn btn-primary">Add friend</button>
+                </div>
+                <div *ngIf="friendDetails.isFriend" class="col-sm-4  profileLinks">
+                    <button type="button" (click)="editProfile()" class="btn btn-success">Message</button>
+                </div>
+            </div>
+            <div *ngIf="friendDetails.isRequested">
+                <div class="col-sm-4  profileLinks">
+                    <button type="button" [disabled] class="btn btn-warning">Requested</button>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.isRequestedMe">
+            <div class="col-sm-4  profileLinks">
+                <button type="button" class="btn btn-success">Accept</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-sm-5 col-sm-offset-4 userDetails">
+        <strong>{{noOfMedias.noOfAudios}} Audios | {{noOfMedias.noOfDocuments}} Documents | {{noOfMedias.noOfImages}} Images | {{noOfMedias.noOfVideos}} Videos</strong>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4 userDetails">
+        <p>{{userDetails.about}}</p>
+    </div>
+</div>
+
+<!-- Full profile info -->
+<div *ngIf="showFullProfile" class="col-sm-8 col-sm-offset-2 fullProfile">
+    <form class="form-horizontal" action="/action_page.php">
+        <div *ngIf="friendDetails.firstName" class="form-group">
+            <label class="control-label col-xs-3">Name :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.firstName}} {{userDetails.lastName}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.alterName" class="form-group">
+            <label class="control-label col-xs-3">Alternate name :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.alterName}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.isFriend" class="form-group">
+            <label class="control-label col-xs-3">Email :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.email}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.isFriend" class="form-group">
+            <label class="control-label col-xs-3">Phone number :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.phoneNo}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.birthDate" class="form-group">
+            <label class="control-label col-xs-3">Birthday :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.birthDate | date:fullDate}}</p>
+            </div>
+        </div>
+
+        <div *ngIf="friendDetails.gender" class="form-group">
+            <label class="control-label col-xs-3">Gender :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.gender}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.address" class="form-group">
+            <label class="control-label col-xs-3">Address :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.address}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.schoolName" class="form-group">
+            <label class="control-label col-xs-3">School name :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.schoolName}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.collegeName" class="form-group">
+            <label class="control-label col-xs-3">College name :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.collegeName}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.work" class="form-group">
+            <label class="control-label col-xs-3">Works at :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.work}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.about" class="form-group">
+            <label class="control-label col-xs-3">About :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.about}}</p>
+            </div>
+        </div>
+        <div *ngIf="friendDetails.quotes" class="form-group">
+            <label class="control-label col-xs-3">Quotes :</label>
+            <div class="col-sm-9 friendDetails">
+                <p>{{userDetails.quotes}}</p>
+            </div>
+        </div>
+    </form>
+</div>
+<router-outlet></router-outlet>

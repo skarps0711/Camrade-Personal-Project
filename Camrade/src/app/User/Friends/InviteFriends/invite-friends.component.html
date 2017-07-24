@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-11 col-xs-offset-1">
+                <div class="col-sm-11 col-sm-offset-1">
                     <div class="form-group">
                         <label>Message :</label>
                         <textarea class="form-control" rows="4" formControlName="message" ></textarea>
@@ -25,7 +25,7 @@
                         <p>{{inviteFormErrors.message}}</p>
                     </div>
                 </div>
-                <div class="col-xs-offset-5">                   
+                <div class="button">                   
                     <button [disabled]="!inviteForm.valid" type="submit" class="btn btn-success">Invite Friend</button>                
                 </div>
                 <div *ngIf="isInviteSent" class="inviteSent">

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { UserDetails } from "app/User/user-details";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { UserService } from "app/User/user.service";
 import { ProfileService } from "app/User/Profile/profile.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { ProfileComponent } from "app/User/Profile/profile.component";
 
 @Component({
     templateUrl: './edit-profile.component.html',
@@ -22,7 +23,7 @@ export class EditProfileComponent implements OnInit {
     constructor(private activatedRoute: ActivatedRoute, private userService: UserService, private profileService: ProfileService, private router: Router, private fb: FormBuilder) { }
 
     ngOnInit() {
-        this.activatedRoute.parent.params.subscribe((params: Params) => {
+        this.activatedRoute.parent.parent.params.subscribe((params: Params) => {
             this.userId = params['id'];
             this.getUserDetails();
         });
@@ -76,11 +77,12 @@ export class EditProfileComponent implements OnInit {
     }
     updateUserProfileSuccess(user: UserDetails) {
         this.userDetails = user;
+        this.router.navigate(['user/' + this.userId + '/profile']);
     }
     updateUserProfileFailed(error) {
     }
-    onCancel(){
-        this.router.navigate(['user/'+this.userId+'/profile']);
+    onCancel() {
+        this.router.navigate(['user/' + this.userId + '/profile']);
     }
     onUserValueChanged(data?: any) {
         if (!this.userForm) { return; }

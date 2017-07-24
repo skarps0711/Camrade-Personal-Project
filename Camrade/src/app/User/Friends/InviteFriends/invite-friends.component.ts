@@ -21,7 +21,7 @@ export class InviteFriendsComponent implements OnInit {
 
     ngOnInit() {
         this.createForm();
-         this.activatedRoute.parent.params.subscribe((params: Params) => {
+         this.activatedRoute.parent.parent.params.subscribe((params: Params) => {
             this.userId = params['id'];
         });
     }

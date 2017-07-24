@@ -1,1 +1,19 @@
-<h4>Friend Request component</h4>
+<div *ngIf="haveRequest">
+    <div class="col-sm-4 userDetails" *ngFor="let users of requestDetails">
+        <div class="col-sm-5">
+            <img src="/assets/users-files/{{users.profilePicture}}" class="img-responsive profilePicture" (click)="visitFriendProfile(users.userId)"
+                style="height:110px;width:80px" alt="Image">
+        </div>
+        <div class="col-sm-7">
+            <a (click)="visitFriendProfile(users.userId)">{{users.firstName}} {{users.lastName}}</a>
+            <p>{{users.alterName}}</p>
+        </div>
+        <div class="buttons">
+            <button type="button" class="btn btn-sm btn-success" (click)="acceptFriendRequest(users.userId)">Accept</button>
+            <button type="button" class="btn btn-sm btn-danger" (click)="deleteFriendRequest(users.userId)">Delete</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="!haveRequest">
+    <h4>There is no friend request...</h4>
+</div>

@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { UserService } from "app/User/user.service";
 import { NoOfMedias } from "app/User/Profile/no-of-medias";
 import { ProfileService } from "app/User/Profile/profile.service";
+import { SaveImage } from "app/User/Profile/save-image";
 
 @Component({
     templateUrl: './profile.component.html',
@@ -13,6 +14,8 @@ import { ProfileService } from "app/User/Profile/profile.service";
 export class ProfileComponent implements OnInit {
     userId: number;
     showProfileCount: number = 1;
+    base64ProfilePic: string;
+    saveImage: SaveImage = new SaveImage();
     showFullProfile: boolean = false;
     showChangeProfile = false;
     showChangeCover = false;
@@ -56,7 +59,7 @@ export class ProfileComponent implements OnInit {
         this.showProfileCount += 1;
     }
     editProfile() {
-        this.router.navigate(['user/' + this.userId + "/editprofile"]);
+        this.router.navigate(['user/' + this.userId + "/profile/editprofile"]);
     }
     onProfileImageClick() {
         this.showChangeProfile = true;
@@ -65,5 +68,69 @@ export class ProfileComponent implements OnInit {
     onCoverImageClick() {
         this.showChangeCover = true;
         this.showChangeProfile = false;
+    }
+
+    onChangeProfilePic(evt, update: string) {
+        console.log(evt.target.files);
+        var files = evt.target.files;
+        var file = files[0];
+
+        if (files && file) {
+            var reader = new FileReader();
+            reader.onload = this.updateProfilePicture.bind(this);
+            reader.readAsBinaryString(file);
+        }
+    }
+    updateProfilePicture(readerEvt) {
+        var binaryString = readerEvt.target.result;
+        this.base64ProfilePic = btoa(binaryString);
+        this.saveImage.userId = this.userId;
+        this.saveImage.byteImage = this.base64ProfilePic;
+        this.saveImage.imageType = "changeProfilePicture";
+        this.profileService.updateImage(this.saveImage).subscribe((data) => this.imageUpadateSuccess(data), (error) => this.imageUpdateFailed(error));
+    }
+    onChangeCoverImage(evt, update: string) {
+        console.log(evt.target.files);
+        var files = evt.target.files;
+        var file = files[0];
+
+        if (files && file) {
+            var reader = new FileReader();
+            reader.onload = this.updateCoverImage.bind(this);
+            reader.readAsBinaryString(file);
+        }
+    }
+    updateCoverImage(readerEvt) {
+        var binaryString = readerEvt.target.result;
+        this.base64ProfilePic = btoa(binaryString);
+        this.saveImage.userId = this.userId;
+        this.saveImage.byteImage = this.base64ProfilePic;
+        this.saveImage.imageType = "changeCoverImage";
+        this.profileService.updateImage(this.saveImage).subscribe((data) => this.imageUpadateSuccess(data), (error) => this.imageUpdateFailed(error));
+    }
+
+
+    imageUpadateSuccess(data) {
+        this.userDetails = data;
+        console.log("success");
+        location.reload();
+    }
+    imageUpdateFailed(error) {
+        console.log("failure");
+    }
+    onRemoveProfilePic() {
+        this.saveImage.userId = this.userId;
+        this.saveImage.imageType = "removeProfilePicture";
+        this.profileService.updateImage(this.saveImage).subscribe((data) => this.imageUpadateSuccess(data), (error) => this.imageUpdateFailed(error));
+        location.reload();
+    }
+    onRemoveCoverImage() {
+        this.saveImage.userId = this.userId;
+        this.saveImage.imageType = "removeCoverImage";
+        this.profileService.updateImage(this.saveImage).subscribe((data) => this.imageUpadateSuccess(data), (error) => this.imageUpdateFailed(error));
+        location.reload();
+    }
+    changePassword(){
+        this.router.navigate(['user/' + this.userId + "/profile/changepassword"]);
     }
 }

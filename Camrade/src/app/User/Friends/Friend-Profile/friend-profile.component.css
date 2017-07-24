@@ -1,0 +1,50 @@
+div{
+    margin-top:2px;
+}
+.coverImage{
+    height:250px;
+    width: 1400px;
+}
+.profilePicture{
+    display: block;
+    margin: auto;
+    margin-top: -90px;
+    max-width: 200px;
+    border-radius: 50px;
+    width:50% !important;
+}
+a{
+    margin-right: 5px;
+    margin-left: 5px;
+    color: black;
+    font-weight: 700;
+    text-decoration: none;
+}
+a:hover{
+    cursor: pointer;
+}
+.profileLinks{
+    text-align: center;
+    margin-top: 20px;
+}
+.userInfo{
+    text-align: center;
+    margin-top: 20px;
+    padding-left: 35px;
+}
+.name{
+    font-size: x-large;
+}
+.userDetails{
+    padding-left: 30px;
+    text-align: center;
+}
+.userDetails strong{
+    color:#B2BEB5;
+}
+.friendDetails{
+    margin-top:8px;
+}
+button:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
