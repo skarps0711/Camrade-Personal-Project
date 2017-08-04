@@ -1,0 +1,57 @@
+I'm trying to use **resizer** in akka routing with **round-robin-pool**. But it is not creating the instances. It is working on the instances which I mentioned in the **lower-bound**.I'm following the documents of akka **version 2.5.3** .  Please help me to solve this problem.
+
+**My configuration :** 
+
+        
+    akka.actor.deployment {
+    /round-robin-resizer {
+    router = round-robin-pool
+    resizer {
+      lower-bound = 4
+      upper-bound = 30
+      pressure-threshold = 0
+      rampup-rate = 0.5
+      messages-per-resize = 1
+    }
+  }
+
+**Actor class :**
+
+    return receiveBuilder()
+        .match(Integer.class, msg -> {
+            System.out.println("Message :  " + msg + " Thread id : " + Thread.currentThread().getId());
+            Thread.sleep(5000);
+        })
+        .matchAny(msg -> {
+             System.out.println("Error Message :  " + msg + " Thread id : " + Thread.currentThread().getId());
+        }).build();
+}
+
+**Creation of actor :**
+
+    ActorRef roundRobin = system.actorOf(FromConfig.getInstance().props(Props.create(RoutingActor.class)), "round-robin-resizer");
+        for (int i = 0; i < 15; i++) {
+            roundRobin.tell(i, ActorRef.noSender());
+        }
+
+**Output :**
+
+    Message : 2  Thread id : 18
+    Message : 1  Thread id : 16
+    Message : 0  Thread id : 15
+    Message : 3  Thread id : 17
+    Message : 7  Thread id : 17
+    Message : 4  Thread id : 15
+    Message : 6  Thread id : 18
+    Message : 5  Thread id : 16
+    Message : 11  Thread id : 17
+    Message : 9  Thread id : 16
+    Message : 10  Thread id : 18
+    Message : 8  Thread id : 15
+    Message : 13  Thread id : 16
+    Message : 14  Thread id : 18
+    Message : 12  Thread id : 15
+
+After every 4 result it is waiting for 5 seconds to complete the job of the  previous instances.
+
+See the **thread ID's**. For every creation of actor instance I'm letting my thread to sleep some time. At the time the new instance should be allocated on different thread. But this process in running till the first three instance. After that it is not creating the new instance as per the resizer. It is appending the message as per the normal flow of round robin pool. Please answer me as soon as possible.
